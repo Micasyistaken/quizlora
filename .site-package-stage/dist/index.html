@@ -1,0 +1,1053 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quizlora</title>
+<meta name="description" content="Quizlora: Çöz, öğren, yarış.">
+<style>
+:root{--pu:#5C50F1;--pu2:#4A3FE0;--sun:#FFB548;--mint:#36CFA8;--ink:#19172F;--bg:#F6F6FE;--card:#FFFFFF;--soft:#EEECFF;--txt:#19172F;--mut:#5E5B7A;--line:#E3E1F7;--red:#D93A40;--lnk:#4A3FE0;--sh:0 10px 30px rgba(92,80,241,.12);--r:26px;--blob:#E6E3FF;color-scheme:light;
+ box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#19172F;--card:#242046;--soft:#322D5E;--txt:#F1F0FF;--mut:#B6B3D6;--line:#403A6E;--lnk:#A29AFF;--sh:0 10px 30px rgba(0,0,0,.35);--blob:#26214F;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#19172F;--card:#242046;--soft:#322D5E;--txt:#F1F0FF;--mut:#B6B3D6;--line:#403A6E;--lnk:#A29AFF;--sh:0 10px 30px rgba(0,0,0,.35);--blob:#26214F;color-scheme:dark}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--txt);font:16px/1.5 "Segoe UI",Inter,system-ui,-apple-system,Roboto,"Helvetica Neue",sans-serif;-webkit-text-size-adjust:100%}
+body::before{content:"";position:fixed;right:-160px;top:-180px;width:460px;height:460px;border-radius:50%;background:var(--blob);z-index:-1}
+h1,h2,h3{font-weight:800;letter-spacing:-.02em;line-height:1.15;margin:0 0 .4em}
+h1{font-size:clamp(2rem,6vw,3.2rem)}h2{font-size:1.45rem}h3{font-size:1.1rem}
+a{color:var(--lnk)}
+p{margin:0 0 .8em}
+.mut{color:var(--mut)}.sm{font-size:.88rem}
+.eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--lnk);margin:0 0 .6em}
+:focus-visible{outline:3px solid var(--sun);outline-offset:2px;border-radius:8px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 18px}
+main{padding:18px 0 24px;min-height:70vh}
+/* üst çubuk */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:color-mix(in srgb,var(--bg) 90%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:14px;height:64px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--txt);font-weight:800;font-size:1.35rem;letter-spacing:-.03em}
+.brand svg{width:38px;height:38px}
+.dnav{display:none;gap:2px;margin-left:12px;flex:1}
+.dnav a{padding:9px 13px;border-radius:12px;color:var(--mut);text-decoration:none;font-weight:700;font-size:.95rem}
+.dnav a:hover{background:var(--soft)}.dnav a.on{background:var(--soft);color:var(--lnk)}
+.tright{margin-left:auto;display:flex;align-items:center;gap:8px}
+.ibtn{width:44px;height:44px;border-radius:14px;border:0;background:var(--soft);color:var(--txt);font-size:1.15rem;cursor:pointer;display:grid;place-items:center;text-decoration:none}
+.chipc{display:inline-flex;align-items:center;gap:6px;background:var(--soft);padding:8px 12px;border-radius:999px;font-weight:800;font-size:.92rem;text-decoration:none;color:var(--txt)}
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);display:flex;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px))}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 2px;border-radius:14px;text-decoration:none;color:var(--mut);font-size:.72rem;font-weight:700;min-height:52px;justify-content:center}
+.bnav a b{font-size:1.3rem;line-height:1}
+.bnav a.on{color:var(--lnk);background:var(--soft)}
+@media(min-width:900px){.dnav{display:flex}.bnav{display:none}.mob-only{display:none!important}}
+/* bileşenler */
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);padding:22px;border:0}
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.g3{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.between{justify-content:space-between}
+.sec{margin-top:34px}
+.sec>.row{margin-bottom:12px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 20px;border-radius:14px;border:2px solid transparent;font:inherit;font-weight:800;cursor:pointer;text-decoration:none;background:var(--soft);color:var(--txt)}
+.btn:hover{filter:brightness(.97)}
+.btn.pri{background:var(--pu);color:#fff;box-shadow:0 8px 18px rgba(92,80,241,.3)}
+.btn.sun{background:var(--sun);color:var(--ink)}
+.btn.mint{background:var(--mint);color:var(--ink)}
+.btn.out{background:transparent;border-color:var(--line)}
+.btn.sm{min-height:38px;padding:0 14px;font-size:.88rem;border-radius:11px}
+.btn[disabled]{opacity:.5;cursor:not-allowed;box-shadow:none}
+.sech{font-size:.8rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--lnk);margin:0}
+.hero{padding:26px 0 8px}
+.herogrid{display:grid;gap:22px;align-items:center}
+@media(min-width:900px){.herogrid{grid-template-columns:1.2fr 1fr}}
+.brandcards{display:grid;gap:14px}
+.bw{display:flex;align-items:center;gap:18px;min-height:150px}
+.wm{font-size:clamp(2.2rem,7vw,3rem);font-weight:800;letter-spacing:-.05em;line-height:1}
+.tg{color:var(--mut);margin-top:8px}
+.bd{background:#19172F;display:grid;place-items:center;min-height:160px}
+@media(max-width:699px){.bd{display:none}}
+.foot{padding-top:6px;padding-bottom:110px;color:var(--mut);font-size:.92rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+@media(min-width:900px){.foot{padding-bottom:40px}}
+.lead{font-size:1.15rem;color:var(--mut);max-width:34em}
+.search{display:flex;gap:10px;background:var(--card);border:2px solid var(--line);border-radius:20px;padding:8px;box-shadow:var(--sh);margin-top:18px;max-width:720px}
+.search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:1.1rem;padding:0 12px;color:var(--txt);min-height:52px}
+.search input:focus{outline:none}.search:focus-within{border-color:var(--pu)}
+.qc{display:flex;flex-direction:column;gap:10px;padding:14px;border-radius:var(--r);background:var(--card);border:0;box-shadow:var(--sh);text-decoration:none;color:var(--txt)}
+.qc:hover,.catc:hover{box-shadow:0 0 0 2px var(--pu),var(--sh)}
+.qrow{display:flex;gap:12px;align-items:center;background:var(--soft);border-radius:18px;padding:12px}
+.qmark{flex:none;width:42px;height:42px;border-radius:50%;background:var(--pu);color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.15rem}
+.qbtn{width:100%;pointer-events:none}
+.ico{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-size:1.4rem;background:color-mix(in srgb,var(--c,#5C50F1) 18%,var(--card))}
+.catc{display:flex;align-items:center;gap:12px;padding:14px;border-radius:var(--r);background:var(--card);border:0;box-shadow:var(--sh);text-decoration:none;color:var(--txt);font-weight:800;min-height:72px}
+.tag{display:inline-block;padding:3px 10px;border-radius:999px;background:var(--soft);font-size:.78rem;font-weight:700;color:var(--mut)}
+.tag.ok{background:color-mix(in srgb,var(--mint) 30%,var(--card));color:var(--txt)}
+.pill{display:inline-flex;align-items:center;padding:9px 14px;border-radius:999px;background:var(--soft);text-decoration:none;color:var(--txt);font-weight:700;font-size:.92rem}
+.pill:hover{background:var(--pu);color:#fff}
+.mode{display:flex;flex-direction:column;gap:8px;padding:20px;border-radius:var(--r);text-decoration:none;color:var(--ink);min-height:150px}
+.mode b{font-size:1.25rem;letter-spacing:-.02em}.mode span{font-size:.92rem;opacity:.85}.mode .e{font-size:2rem}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin:14px 0 18px;scrollbar-width:thin}
+.tabs a,.tabs button{flex:none;padding:10px 16px;border-radius:12px;background:var(--soft);color:var(--mut);text-decoration:none;font-weight:800;font-size:.92rem;border:0;font-family:inherit;cursor:pointer;min-height:44px}
+.tabs .on{background:var(--pu);color:#fff}
+input,select,textarea{font:inherit;color:var(--txt);background:var(--card);border:2px solid var(--line);border-radius:12px;padding:11px 13px;min-height:46px;width:100%}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--pu)}
+label{display:block;font-weight:700;margin:12px 0 6px;font-size:.92rem}
+.form{max-width:440px;margin:20px auto}
+.err{color:var(--red);font-weight:700;min-height:1.4em}
+table{width:100%;border-collapse:collapse}
+th,td{padding:10px 8px;text-align:left;border-bottom:1px solid var(--line);font-size:.92rem}
+.tw{overflow-x:auto}
+.empty{text-align:center;padding:34px 16px;color:var(--mut)}
+/* quiz oynatıcı */
+.run{max-width:760px;margin:0 auto}
+.qhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}
+.bar{height:12px;border-radius:99px;background:var(--soft);overflow:hidden;margin-bottom:18px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--pu),var(--mint));border-radius:99px;transition:width .3s}
+.clock{font-weight:800;font-size:1.1rem;background:var(--sun);color:var(--ink);padding:6px 14px;border-radius:999px;font-variant-numeric:tabular-nums}
+.clock.low{background:var(--red);color:#fff}
+.qt{font-size:clamp(1.3rem,4.5vw,1.8rem);margin:6px 0 20px}
+.opts{display:grid;gap:10px}
+.opt{display:flex;gap:12px;align-items:center;text-align:left;width:100%;min-height:60px;padding:12px 16px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--txt);font:inherit;font-weight:700;font-size:1.05rem;cursor:pointer}
+.opt:hover{border-color:var(--pu)}
+.opt i{flex:none;width:34px;height:34px;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-style:normal;font-weight:800;color:var(--lnk)}
+.opt.sel{border-color:var(--pu);background:var(--soft)}
+.opt.sel i{background:var(--pu);color:#fff}
+.opt.good{border-color:var(--mint);background:color-mix(in srgb,var(--mint) 22%,var(--card))}
+.opt.bad{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--card))}
+.opt[disabled]{cursor:default}
+.acts{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+.acts .grow{flex:1}
+.dots{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px}
+.dots button{width:38px;height:38px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--txt);font-weight:800;cursor:pointer}
+.dots .done{background:var(--soft);border-color:var(--pu)}.dots .cur{background:var(--pu);color:#fff;border-color:var(--pu)}
+.fb{margin-top:14px;padding:14px;border-radius:14px;background:var(--soft)}
+.rev{padding:14px 0;border-bottom:1px solid var(--line)}
+.score{font-size:3rem;font-weight:800;letter-spacing:-.04em}
+.pop{position:fixed;left:50%;top:40%;font-size:4rem;pointer-events:none;animation:pop 1s ease-out forwards;z-index:60}
+@keyframes pop{0%{transform:translate(-50%,0) scale(.5);opacity:0}30%{opacity:1;transform:translate(-50%,-20px) scale(1.2)}100%{transform:translate(-50%,-90px) scale(1);opacity:0}}
+/* yolculuk */
+.path{display:flex;flex-direction:column;align-items:center;gap:0;padding:10px 0}
+.stone{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.3rem;background:var(--soft);color:var(--mut);border:4px solid var(--line);position:relative;text-align:center;line-height:1.1}
+.stone small{display:block;font-size:.66rem;font-weight:700}
+.stone.done{background:var(--mint);color:var(--ink);border-color:var(--mint)}
+.stone.cur{background:var(--pu);color:#fff;border-color:var(--sun);box-shadow:0 0 0 6px color-mix(in srgb,var(--sun) 35%,transparent)}
+.stone.cool{background:var(--sun);color:var(--ink);border-color:var(--sun)}
+.stone.final{border-radius:26px}
+.seg{width:6px;height:26px;background:var(--line);border-radius:3px}
+.seg.d{background:var(--mint)}
+.lv{display:flex;flex-direction:column;align-items:center}
+/* mağaza / önizleme */
+.pv{height:110px;border-radius:16px;display:grid;place-items:center;font-size:2.4rem;overflow:hidden;position:relative}
+.av{display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,var(--pu),var(--mint));color:#fff;flex:none}
+.modal{position:fixed;inset:0;background:rgba(10,8,30,.55);z-index:50;display:grid;place-items:center;padding:18px}
+.modal .card{max-width:440px;width:100%;max-height:90vh;overflow:auto}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:12px 18px;border-radius:14px;font-weight:700;z-index:70;max-width:90vw;box-shadow:var(--sh)}
+.meter{height:10px;border-radius:99px;background:var(--soft);overflow:hidden}.meter i{display:block;height:100%;background:var(--pu);border-radius:99px}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;text-align:center}
+.zoom{animation:zoomin .7s ease-out}.slide{animation:slidein .7s ease-out}.spin{animation:spin .8s ease-out}
+@keyframes zoomin{from{transform:scale(.3);opacity:0}to{transform:none;opacity:1}}
+@keyframes slidein{from{transform:translateX(-80px);opacity:0}to{transform:none;opacity:1}}
+@keyframes spin{from{transform:rotate(-200deg) scale(.4);opacity:0}to{transform:none;opacity:1}}
+.spinner{width:46px;height:46px;border-radius:50%;border:5px solid var(--soft);border-top-color:var(--pu);animation:rot 1s linear infinite;margin:0 auto}
+@keyframes rot{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6F63FF"/><stop offset="1" stop-color="#4A3FE0"/></linearGradient></defs></svg>
+<header class="top"><div class="wrap" id="topbar"></div></header>
+<main class="wrap" id="app" tabindex="-1"></main>
+<footer class="wrap foot"><div><p class="eyebrow">Karakter</p>Eğlenceli · Öğretici · Rekabetçi · Her seviyeye açık</div><span>Quizlora</span></footer>
+<nav class="bnav" id="bnav" aria-label="Ana gezinme"></nav>
+<script>
+'use strict';
+/* ================= yardımcılar ================= */
+const $=(s,e=document)=>e.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s==null?'':s).toLocaleLowerCase('tr').replace(/ı/g,'i').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]/g,'');
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const fmtD=t=>new Date(t).toLocaleDateString('tr-TR',{day:'numeric',month:'short',year:'numeric'});
+const fmtT=s=>{s=Math.max(0,Math.ceil(s));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+const fmtLeft=ms=>{const s=Math.max(0,Math.ceil(ms/1000)),h=Math.floor(s/3600),m=Math.floor(s%3600/60);return (h?h+' sa ':'')+m+' dk '+(s%60)+' sn'};
+const dayKey=()=>new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);
+const weekStart=()=>{const d=new Date();d.setDate(d.getDate()-((d.getDay()+6)%7));d.setHours(0,0,0,0);return d};
+const weekKey=()=>{const d=weekStart();return new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10)};
+const sha=async t=>[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode('qz:'+t)))].map(b=>b.toString(16).padStart(2,'0')).join('');
+const LET='ABCD';
+
+/* ================= başlangıç verisi ================= */
+const TREE=[
+['Genel Kültür','🌍','#5B3DF5',['Karma bilgi','İcatlar ve mucitler','Dünya hakkında bilgiler','Semboller ve işaretler','Günlük hayattan bilgiler']],
+['Tarih','🏛️','#C2410C',['İlk Çağ','Orta Çağ','Osmanlı tarihi','Türkiye Cumhuriyeti tarihi','Dünya savaşları','Yakın dönem tarihi']],
+['Coğrafya','🗺️','#0E9F6E',['Ülkeler ve başkentler','Bayraklar','Türkiye coğrafyası','Haritalar','İklim ve doğal oluşumlar']],
+['Bilim','🔬','#0284C7',['Fizik','Kimya','Biyoloji','Astronomi','Yer bilimleri']],
+['Teknoloji','💻','#4F46E5',['Bilgisayarlar','İnternet','Yazılım','Yapay zekâ','Teknoloji tarihi']],
+['Matematik ve Mantık','🧮','#DB2777',['Temel matematik','Geometri','Problemler','Mantık soruları','Olasılık']],
+['Diller ve Edebiyat','📚','#B45309',['Türkçe','İngilizce','Fransızca','Türk edebiyatı','Dünya edebiyatı']],
+['Oyunlar ve E-spor','🎮','#7C3AED',['League of Legends','Valorant','Minecraft','Oyun tarihi','Diğer video oyunları']],
+['Film ve Diziler','🎬','#BE123C',['Filmler','Diziler','Sitcomlar','Oyuncular ve yönetmenler','Film türleri']],
+['Anime, Manga ve Çizgi Roman','🍥','#EA580C',['Naruto','One Piece','Dragon Ball','Diğer anime ve mangalar','Çizgi roman evrenleri']],
+['Spor','⚽','#15803D',['Futbol','Basketbol','Voleybol','Olimpiyatlar','Motor sporları']],
+['Müzik','🎵','#C026D3',['Türkçe pop','Dünya müziği','Rock','Klasik müzik','Enstrümanlar']],
+['Sanat ve Tasarım','🎨','#0891B2',['Resim ve ressamlar','Mimari','Tiyatro','Fotoğrafçılık','Tasarım tarihi']],
+['İnsan ve Toplum','🧠','#9333EA',['Psikoloji','Felsefe','Ekonomi','Hukuk ve vatandaşlık','Mitoloji']],
+['Yaşam ve Hobiler','🌱','#65A30D',['Yemek ve mutfak','Seyahat','Sağlık okuryazarlığı','Hayvanlar','Hobiler']]];
+const QZ=[
+['10 Soruda Genel Kültür','Genel Kültür','Karma bilgi'],['İcatlar ve Mucitler','Genel Kültür','İcatlar ve mucitler'],
+['Osmanlı Padişahları','Tarih','Osmanlı tarihi'],['Antik Roma','Tarih','İlk Çağ'],
+['Dünya Başkentleri','Coğrafya','Ülkeler ve başkentler'],['Türkiye’nin Coğrafi Bölgeleri','Coğrafya','Türkiye coğrafyası'],
+['Temel Kimya','Bilim','Kimya'],['Güneş Sistemi','Bilim','Astronomi'],
+['İnternetin Temelleri','Teknoloji','İnternet'],['Yapay Zekâ Temelleri','Teknoloji','Yapay zekâ'],
+['Günlük Matematik','Matematik ve Mantık','Temel matematik'],['Mantık Soruları','Matematik ve Mantık','Mantık soruları'],
+['İngilizce A1 Kelimeler','Diller ve Edebiyat','İngilizce'],['Fransızca A1 Kelimeler','Diller ve Edebiyat','Fransızca'],
+['League of Legends Şampiyonları','Oyunlar ve E-spor','League of Legends'],['Valorant Ajanları','Oyunlar ve E-spor','Valorant'],
+['Sitcom Karakterleri','Film ve Diziler','Sitcomlar'],['Film Türleri','Film ve Diziler','Film türleri'],
+['Naruto Karakterleri','Anime, Manga ve Çizgi Roman','Naruto'],['One Piece Evreni','Anime, Manga ve Çizgi Roman','One Piece'],
+['Futbol Kuralları','Spor','Futbol'],['Olimpiyat Sporları','Spor','Olimpiyatlar'],
+['Müzik Enstrümanları','Müzik','Enstrümanlar'],['Türkçe Pop','Müzik','Türkçe pop'],
+['Ünlü Ressamlar','Sanat ve Tasarım','Resim ve ressamlar'],['Mimari Akımlar','Sanat ve Tasarım','Mimari'],
+['Psikolojinin Temel Kavramları','İnsan ve Toplum','Psikoloji'],['Ekonominin Temelleri','İnsan ve Toplum','Ekonomi'],
+['Dünya Mutfakları','Yaşam ve Hobiler','Yemek ve mutfak'],['Hayvanlar Alemi','Yaşam ve Hobiler','Hayvanlar']];
+const GROUP_NAMES=[
+['Genel Kültür','Tarih','Coğrafya','Bilim','Spor'],
+['Teknoloji','Matematik ve Mantık','Diller ve Edebiyat','Oyunlar ve E-spor','Film ve Diziler'],
+['Anime, Manga ve Çizgi Roman','Müzik','Sanat ve Tasarım','İnsan ve Toplum','Yaşam ve Hobiler']];
+const STORE_TYPES=[['avatar','Avatar'],['frame','Avatar çerçevesi'],['bg','Profil arka planı'],['theme','Profil kartı teması'],['intro','Düello giriş animasyonu'],['fx','Doğru cevap efekti'],['stone','Yolculuk taşı görünümü'],['icon','Kullanıcı adı simgesi']];
+const SDATA={
+ avatar:[{e:'🦊'},{e:'🐼'},{e:'🚀'}],
+ frame:[{c:'#FFB548'},{c:'#36CFA8'},{c:'#FF6B9A'}],
+ bg:[{a:'#5C50F1',b:'#36CFA8'},{a:'#FFB548',b:'#FF6B9A'},{a:'#19172F',b:'#5C50F1'}],
+ theme:[{a:'#EEECFF',b:'#5C50F1'},{a:'#DDF8EF',b:'#1F9E7E'},{a:'#FFF0D6',b:'#B36B00'}],
+ intro:[{k:'zoom',e:'🔍'},{k:'slide',e:'➡️'},{k:'spin',e:'🌀'}],
+ fx:[{e:'🎉'},{e:'⭐'},{e:'🔥'}],
+ stone:[{c:'#FF6B9A',r:'50%'},{c:'#36CFA8',r:'26px'},{c:'#FFB548',r:'14px'}],
+ icon:[{e:'👑'},{e:'⚡'},{e:'🌟'}]};
+
+function seed(){
+  const cats=[];let n=0;
+  TREE.forEach(([nm,ic,co,subs])=>{const id='c'+(++n);cats.push({id,n:nm,i:ic,c:co,p:null});subs.forEach(s=>cats.push({id:'c'+(++n),n:s,i:ic,c:co,p:id}))});
+  const mains=cats.filter(c=>!c.p);
+  const find=(m,s)=>{const M=mains.find(c=>c.n===m);return cats.find(c=>c.p===M.id&&c.n===s)};
+  const quizzes=QZ.map(([t,m,s],k)=>{
+    const id='q'+(k+1),sub=find(m,s),mid=sub.p;
+    return {id,t,cat:sub.id,ver:1,feat:k<6,plays:0,at:k,st:'yayin',
+      qs:Array.from({length:10},(_,j)=>({id:id+'-'+(j+1),q:'Soru '+(j+1),o:['Cevap A','Cevap B','Cevap C','Cevap D'],a:(j*3+k)%4,e:'Açıklama',d:1+j%3,cat:mid,sub:sub.id}))};
+  });
+  const store=[];
+  STORE_TYPES.forEach(([t,l])=>SDATA[t].forEach((d,i)=>store.push({id:t+(i+1),type:t,n:l+' '+(i+1),price:null,d,on:true})));
+  return {v:1,cats,quizzes,extra:[],users:{},me:null,theme:null,store,sugs:[],reports:[],
+    seasons:[{id:1,n:'Sezon 1',a:Date.now(),b:null}],
+    missions:[
+      {id:'m1',t:'Bir quiz tamamla',per:'d',metric:'quiz',target:1,reward:null},
+      {id:'m2',t:'Bugün 10 soru çöz',per:'d',metric:'ans',target:10,reward:null},
+      {id:'m3',t:'Bu hafta 5 quiz tamamla',per:'w',metric:'quiz',target:5,reward:null},
+      {id:'m4',t:'Yolculukta 3 taş geç',per:'w',metric:'stone',target:3,reward:null},
+      {id:'m5',t:'Bir düello oyna',per:'w',metric:'duel',target:1,reward:null}],
+    s:{duelSec:20,duelCredit:15,duelBonus:30,cool:120,stoneBase:90,stoneStep:5,stoneTimes:{},suggestMin:100,
+       groups:GROUP_NAMES.map(g=>g.map(x=>mains.find(c=>c.n===x).id))}};
+}
+
+/* ================= veri katmanı ================= */
+let DB;
+function load(){try{DB=JSON.parse(localStorage.getItem('qz_db')||'null')}catch(e){DB=null}if(!DB||DB.v!==1){DB=seed();save()}}
+function save(){try{localStorage.setItem('qz_db',JSON.stringify(DB))}catch(e){}}
+let G={done:{}};
+try{G=JSON.parse(sessionStorage.getItem('qz_guest')||'{"done":{}}')}catch(e){}
+const saveG=()=>{try{sessionStorage.setItem('qz_guest',JSON.stringify(G))}catch(e){}};
+const U=()=>DB.me?DB.users[DB.me]:null;
+const cat=id=>DB.cats.find(c=>c.id===id);
+const MAINS=()=>DB.cats.filter(c=>!c.p);
+const kids=id=>DB.cats.filter(c=>c.p===id);
+const mainOf=id=>{let c=cat(id);while(c&&c.p)c=cat(c.p);return c};
+const desc=id=>{const r=[id];kids(id).forEach(k=>r.push(...desc(k.id)));return r};
+const quizzesIn=id=>{const s=new Set(desc(id));return DB.quizzes.filter(q=>q.st!=='taslak'&&s.has(q.cat))};
+const quiz=id=>DB.quizzes.find(q=>q.id===id);
+const crumb=id=>{const a=[];let c=cat(id);while(c){a.unshift(c);c=c.p?cat(c.p):null}return a};
+function poolFor(mid){
+  const out=[];
+  for(let n=1;n<=60;n++)out.push({id:mid+'-'+n,q:'Soru '+n,o:['Cevap A','Cevap B','Cevap C','Cevap D'],a:(n*7)%4,e:'Açıklama',d:1+n%3,cat:mid,sub:mid});
+  DB.extra.filter(x=>x.st==='yayin'&&mainOf(x.cat)&&mainOf(x.cat).id===mid).forEach(x=>out.push({...x,cat:mid,sub:x.cat}));
+  return out;
+}
+const poolMix=()=>MAINS().flatMap(m=>poolFor(m.id));
+function newUser(name,email,hash,admin){
+  return {name,email,hash,admin:!!admin,bio:'',credits:0,skill:1000,placed:false,at:Date.now(),done:{},cat:{},sub:{},log:[],seen:{},credited:{},
+    follows:[],friends:[],owned:[],eq:{},j:{level:1,stone:1,cool:0,seen:{},active:false},badges:[],m:{},claimed:{},streak:0,last:'',duels:0,resume:null,
+    priv:{stats:true,coll:true,badges:true},notif:true,acts:[]};
+}
+function act(u,t){u.acts.unshift({t:Date.now(),x:t});u.acts.length=Math.min(u.acts.length,30)}
+function touchDay(u){const d=dayKey();if(u.last===d)return;const y=dayKey.call(null);const yd=new Date(Date.now()-864e5-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);u.streak=u.last===yd?u.streak+1:1;u.last=d}
+function bump(metric,n=1){const u=U();if(!u)return;['d'+dayKey(),'w'+weekKey()].forEach(k=>{const key=k+':'+metric;u.m[key]=(u.m[key]||0)+n})}
+function rec(q,ok){
+  const u=U();if(!u)return;
+  const up=[0,5,7,9][q.d||1],dn=[0,3,4,5][q.d||1];
+  u.skill=Math.max(0,Math.min(3000,u.skill+(ok?up:-dn)));
+  const c=u.cat[q.cat]||(u.cat[q.cat]={a:0,c:0});c.a++;if(ok)c.c++;
+  if(q.sub){const s=u.sub[q.sub]||(u.sub[q.sub]={a:0,c:0});s.a++;if(ok)s.c++}
+  u.log.push({t:Date.now(),c:q.cat,q:q.id,ok:ok?1:0});if(u.log.length>4000)u.log.shift();
+  bump('ans');if(ok)bump('ok');touchDay(u);
+}
+const BADGES=[
+ {id:'b1',t:'İlk adım',d:'İlk quizini tamamla',ic:'🚩',f:u=>Object.keys(u.done).length>=1},
+ {id:'b2',t:'100 doğru',d:'Toplam 100 doğru cevap ver',ic:'💯',f:u=>u.log.filter(l=>l.ok).length>=100},
+ {id:'b3',t:'3 gün seri',d:'Üst üste 3 gün katıl',ic:'🔥',f:u=>u.streak>=3},
+ {id:'b4',t:'Yolcu',d:'Yolculukta 2. seviyeye ulaş',ic:'🧭',f:u=>u.j.level>=2},
+ {id:'b5',t:'Kusursuz',d:'Bir quizde tam puan al',ic:'🎯',f:u=>Object.values(u.done).some(d=>d.runs.some(r=>r.c===r.n))},
+ {id:'b6',t:'Koleksiyoncu',d:'Mağazadan ilk ürünü al',ic:'🛍️',f:u=>u.owned.length>0},
+ {id:'b7',t:'Düellocu',d:'Bir düello oyna',ic:'⚔️',f:u=>u.duels>0}];
+function checkBadges(){const u=U();if(!u)return;BADGES.forEach(b=>{if(!u.badges.includes(b.id)&&b.f(u)){u.badges.push(b.id);act(u,'Rozet kazandı: '+b.t);toast('🏅 Yeni rozet: '+b.t)}});save()}
+
+/* ================= kozmetik çizimi ================= */
+const item=id=>DB.store.find(i=>i.id===id);
+function eqItem(u,t){return u&&u.eq[t]?item(u.eq[t]):null}
+function avatar(u,size=48){
+  const a=eqItem(u,'avatar'),f=eqItem(u,'frame');
+  const e=a?a.d.e:'🙂';
+  return `<span class="av" style="width:${size}px;height:${size}px;font-size:${size*.5}px;${f?`box-shadow:0 0 0 4px ${f.d.c}`:''}">${e}</span>`;
+}
+function nameHtml(u){const i=eqItem(u,'icon');return esc(u.name)+(i?' '+i.d.e:'')}
+function preview(it){
+  const d=it.d;
+  switch(it.type){
+    case 'avatar':return `<div class="pv" style="background:var(--soft)"><span class="av" style="width:72px;height:72px;font-size:36px">${d.e}</span></div>`;
+    case 'frame':return `<div class="pv" style="background:var(--soft)"><span class="av" style="width:68px;height:68px;font-size:34px;box-shadow:0 0 0 5px ${d.c}">🙂</span></div>`;
+    case 'bg':return `<div class="pv" style="background:linear-gradient(135deg,${d.a},${d.b})"></div>`;
+    case 'theme':return `<div class="pv" style="background:${d.a};color:${d.b};font-weight:800;font-size:1.1rem;border:3px solid ${d.b}">Profil kartı</div>`;
+    case 'intro':return `<div class="pv" style="background:var(--soft)"><span class="${d.k}" style="font-size:2.6rem">${d.e}</span></div>`;
+    case 'fx':return `<div class="pv" style="background:var(--soft);letter-spacing:6px">${d.e}${d.e}${d.e}</div>`;
+    case 'stone':return `<div class="pv" style="background:var(--soft)"><span style="width:60px;height:60px;background:${d.c};border-radius:${d.r};display:block"></span></div>`;
+    case 'icon':return `<div class="pv" style="background:var(--soft);font-weight:800;font-size:1.3rem">Oyuncu ${d.e}</div>`;
+  }
+  return '';
+}
+
+/* ================= arayüz yardımcıları ================= */
+const app=$('#app');
+let CUR=null,TIMERS=[];
+function toast(m){const t=document.createElement('div');t.className='toast';t.setAttribute('role','status');t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
+function modal(html){closeModal();const m=document.createElement('div');m.className='modal';m.id='modal';m.innerHTML=`<div class="card" role="dialog" aria-modal="true">${html}</div>`;m.addEventListener('click',e=>{if(e.target===m)closeModal()});document.body.appendChild(m);const f=m.querySelector('input,textarea,select,button');if(f)f.focus();return m}
+function closeModal(){const m=$('#modal');if(m)m.remove()}
+function confirmBox(title,text,okText,fn){modal(`<h3>${esc(title)}</h3><p class="mut">${text}</p><div class="row"><button class="btn pri" id="cok">${esc(okText)}</button><button class="btn out" data-a="close">Vazgeç</button></div>`);$('#cok').onclick=()=>{closeModal();fn()}}
+function every(fn,ms){const id=setInterval(fn,ms);TIMERS.push(id);return id}
+function later(fn,ms){const id=setTimeout(fn,ms);TIMERS.push(id);return id}
+function setApp(h){app.innerHTML=h;window.scrollTo(0,0)}
+function go(h){location.hash=h}
+const A={};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(t&&A[t.dataset.a]){A[t.dataset.a](t,e)}});
+A.close=closeModal;
+
+const NAV=[['#/','Ana Sayfa','🏠'],['#/kesfet','Keşfet','🧭'],['#/modlar','Modlar','🎮'],['#/siralamalar','Sıralamalar','🏆'],['#/gorevler','Görevler','✅'],['#/magaza','Mağaza','🛍️']];
+function logo(sz){return `<svg viewBox="0 0 64 64" width="${sz}" height="${sz}" aria-hidden="true"><rect width="64" height="64" rx="18" fill="url(#lg)"/><circle cx="29" cy="30" r="15" fill="none" stroke="#fff" stroke-width="7"/><path d="M40.5 41.5L50 51" stroke="#fff" stroke-width="7" stroke-linecap="round"/><circle cx="49" cy="15" r="4.8" fill="#FFB548"/></svg>`}
+function chrome(){
+  const u=U(),h=location.hash||'#/';
+  const on=p=>p==='#/'?h==='#/'||h==='':h.startsWith(p);
+  const prof=u?['#/profil','Profilim','👤']:['#/giris','Giriş Yap','👤'];
+  $('#topbar').innerHTML=`<a class="brand" href="#/" aria-label="Quizlora ana sayfa">${logo(38)}Quizlora</a>
+   <nav class="dnav" aria-label="Üst gezinme">${NAV.map(n=>`<a href="${n[0]}" class="${on(n[0])?'on':''}">${n[1]}</a>`).join('')}<a href="${prof[0]}" class="${on(prof[0])?'on':''}">${prof[1]}</a>${u&&u.admin?`<a href="#/yonetim" class="${on('#/yonetim')?'on':''}">Yönetim</a>`:''}</nav>
+   <div class="tright">
+    <a class="ibtn mob-only" href="#/gorevler" aria-label="Görevler">✅</a><a class="ibtn mob-only" href="#/magaza" aria-label="Mağaza">🛍️</a>
+    ${u?`<a class="chipc" href="#/magaza" aria-label="Kredi">🪙 ${u.credits}</a>`:''}
+    <button class="ibtn" data-a="theme" aria-label="Temayı değiştir">${isDark()?'☀️':'🌙'}</button>
+    ${u?`<a href="#/profil" aria-label="Profilim">${avatar(u,40)}</a>`:`<a class="btn pri sm" href="#/giris" style="display:none" id="tlogin">Giriş Yap</a>`}
+   </div>`;
+  const tl=$('#tlogin');if(tl&&innerWidth>=900)tl.style.display='inline-flex';
+  const bn=[NAV[0],NAV[1],NAV[2],NAV[3],prof];
+  $('#bnav').innerHTML=bn.map(n=>`<a href="${n[0]}" class="${on(n[0])?'on':''}" ${on(n[0])?'aria-current="page"':''}><b>${n[2]}</b>${n[1]}</a>`).join('');
+}
+function isDark(){const t=DB.theme;return t?t==='dark':matchMedia('(prefers-color-scheme: dark)').matches}
+function applyTheme(){if(DB.theme)document.documentElement.setAttribute('data-theme',DB.theme);else document.documentElement.removeAttribute('data-theme')}
+A.theme=()=>{DB.theme=isDark()?'light':'dark';save();applyTheme();chrome()};
+
+function qcard(q){
+  const c=cat(q.cat),u=U(),done=u?u.done[q.id]:G.done[q.id];
+  return `<a class="qc" href="#/quiz/${q.id}"><span class="qrow"><span class="qmark" aria-hidden="true">?</span><span><b>${esc(q.t)}</b><br><span class="mut sm">${esc(c.n)} · ${q.qs.length} soru</span></span></span>${done||q.plays?`<span class="row">${done?'<span class="tag ok">✓ Tamamlandı</span>':''}${q.plays?`<span class="tag">${q.plays} çözüm</span>`:''}</span>`:''}<span class="btn pri qbtn">Teste başla</span></a>`;
+}
+function catcard(c){return `<a class="catc" href="#/kategori/${c.id}"><span class="ico" style="--c:${c.c}">${c.i}</span><span>${esc(c.n)}<br><span class="mut sm" style="font-weight:600">${kids(c.id).length} alt kategori</span></span></a>`}
+function section(t,body,more){return `<section class="sec"><div class="row between"><h2 class="sech">${t}</h2>${more||''}</div>${body}</section>`}
+
+/* ================= oynatıcı ================= */
+function optsHtml(q,S,c){
+  const i=S.i,typed=c.typed;
+  if(typed){const v=c.back?(S.ans[i]||''):'';return `<input id="typed" type="text" autocomplete="off" placeholder="Cevabını yaz" aria-label="Cevabın" value="${esc(v)}" ${S.fb?'disabled':''}>`}
+  return `<div class="opts" role="group" aria-label="Cevap seçenekleri">${q.o.map((o,k)=>{
+    let cls='';
+    if(S.fb){cls=k===q.a?'good':(k===S.ans[i]?'bad':'')}
+    else if(c.back?S.ans[i]===k:S.sel===k)cls='sel';
+    return `<button class="opt ${cls}" data-a="pick" data-v="${k}" ${S.fb?'disabled':''}><i>${LET[k]}</i>${esc(o)}</button>`}).join('')}</div>`;
+}
+function play(c){
+  const n=c.qs.length;
+  const S={i:0,ans:Array(n).fill(null),sel:null,fb:false,end:c.limit?Date.now()+c.limit*1000:0,done:false,failed:false,t:0};
+  if(c.resume){S.i=Math.min(c.resume.i,n-1);S.ans=c.resume.ans.slice();}
+  const isOk=k=>{const a=S.ans[k],q=c.qs[k];if(a==null||a==='')return false;return c.typed?norm(a)===norm(q.o[q.a]):a===q.a};
+  function end(reason){
+    if(S.done)return;S.done=true;clearInterval(S.t);CUR=null;
+    c.onEnd({ans:S.ans,ok:c.qs.map((_,k)=>isOk(k)),reason});
+  }
+  function draw(){
+    const q=c.qs[S.i];if(c.onShow&&!S.fb)c.onShow(q);
+    const last=S.i===n-1;
+    let h=`<div class="run"><div class="qhead"><div><b>${esc(c.title)}</b><br><span class="mut sm">Soru ${S.i+1} / ${n}</span></div>${S.end?'<div class="clock" id="clk" role="timer"></div>':''}</div>
+     <div class="bar"><i style="width:${(S.i+(S.fb?1:0))/n*100}%"></i></div>
+     <div class="card"><h2 class="qt">${esc(q.q)}</h2>${optsHtml(q,S,c)}`;
+    if(S.fb){h+=`<div class="fb" role="status"><b>${S.failed?'Yanlış cevap':(isOk(S.i)?'Doğru!':'Yanlış cevap')}</b><br>Doğru cevap: ${esc(q.o[q.a])}<br><span class="mut">${esc(q.e)}</span></div>`}
+    h+='<div class="acts">';
+    if(c.back){
+      h+=`${S.i>0?'<button class="btn out" data-a="prev">Önceki</button>':''}<button class="btn out" data-a="skip">Pas</button><span class="grow"></span>${last?'<button class="btn pri" data-a="fin">Sınavı bitir</button>':'<button class="btn pri" data-a="next">Sonraki</button>'}`;
+    }else if(S.fb){
+      h+=`<button class="btn pri grow" data-a="next">${S.failed?'Devam':(last?'Bitir':'Sonraki soru')}</button>`;
+    }else{
+      h+=`<button class="btn pri grow" data-a="send" ${(c.typed?false:S.sel==null)?'disabled':''} id="sendb">Cevabı gönder</button>`;
+    }
+    h+='</div></div>';
+    if(c.back){h+=`<div class="dots" aria-label="Soru gezgini">${c.qs.map((_,k)=>`<button data-a="go" data-v="${k}" class="${k===S.i?'cur':(S.ans[k]!=null&&S.ans[k]!==''?'done':'')}" aria-label="Soru ${k+1}">${k+1}</button>`).join('')}</div>`}
+    h+='</div>';
+    setApp(h);
+    if(c.typed){const inp=$('#typed');if(inp){inp.addEventListener('input',()=>{if(c.back)S.ans[S.i]=inp.value;else S.sel=inp.value});inp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!c.back)CUR.send()});if(!S.fb)inp.focus()}}
+    tick();
+  }
+  function tick(){
+    const el=$('#clk');if(!el||!S.end)return;
+    const s=(S.end-Date.now())/1000;el.textContent='⏱ '+fmtT(s);el.classList.toggle('low',s<30);
+    if(s<=0)end('time');
+  }
+  function adv(){if(S.i>=n-1)end('done');else{S.i++;S.sel=null;S.fb=false;draw()}}
+  CUR={
+    abort(){clearInterval(S.t);if(!S.done&&c.onAbort)c.onAbort(S)},
+    pick(k){if(S.fb)return;if(c.back){S.ans[S.i]=k}else S.sel=k;draw()},
+    send(){
+      if(S.fb)return;const v=S.sel;if(v==null||v==='')return;
+      S.ans[S.i]=v;const ok=isOk(S.i);
+      if(c.onProgress)c.onProgress(S);
+      if(c.instant){
+        S.fb=true;S.failed=!!(c.failFast&&!ok);
+        if(ok){const fx=eqItem(U(),'fx');if(fx)pulse(fx.d.e)}
+        draw();
+      }else adv();
+    },
+    next(){if(c.back){if(S.i<n-1){S.i++;draw()}}else if(S.failed)end('wrong');else adv()},
+    prev(){if(S.i>0){S.i--;draw()}},
+    skip(){S.ans[S.i]=null;if(S.i<n-1){S.i++;draw()}else draw()},
+    go(k){S.i=k;draw()},
+    fin(){const blank=S.ans.filter(a=>a==null||a==='').length;if(blank){confirmBox('Sınavı bitir',blank+' soru boş kaldı. Bitirmek istiyor musun?','Evet, bitir',()=>end('done'))}else end('done')}
+  };
+  if(S.end)S.t=setInterval(tick,500);
+  draw();
+}
+function pulse(e){const p=document.createElement('div');p.className='pop';p.textContent=e;document.body.appendChild(p);setTimeout(()=>p.remove(),1000)}
+A.pick=t=>CUR&&CUR.pick(+t.dataset.v);A.send=()=>CUR&&CUR.send();A.next=()=>CUR&&CUR.next();A.prev=()=>CUR&&CUR.prev();
+A.skip=()=>CUR&&CUR.skip();A.go=t=>CUR&&CUR.go(+t.dataset.v);A.fin=()=>CUR&&CUR.fin();
+
+function reviewHtml(qs,res,typed){
+  return qs.map((q,k)=>{
+    const a=res.ans[k],blank=a==null||a==='';
+    const mine=blank?'Boş':(typed?esc(a):esc(q.o[a]));
+    return `<div class="rev"><b>${k+1}. ${esc(q.q)}</b><br>
+     <span class="tag ${res.ok[k]?'ok':''}">${res.ok[k]?'Doğru':(blank?'Boş':'Yanlış')}</span> Senin cevabın: ${mine}<br>
+     Doğru cevap: <b>${esc(q.o[q.a])}</b><br><span class="mut">${esc(q.e)}</span><br>
+     <button class="btn sm out" data-a="report" data-q="${esc(q.id)}" style="margin-top:6px">Hatalı soruyu bildir</button></div>`}).join('');
+}
+A.report=t=>{
+  const id=t.dataset.q;
+  modal(`<h3>Hatalı soru bildir</h3><label for="rn">Neyin yanlış olduğunu yaz</label><textarea id="rn" rows="3" maxlength="300"></textarea><div class="row" style="margin-top:12px"><button class="btn pri" id="rs">Gönder</button><button class="btn out" data-a="close">Vazgeç</button></div>`);
+  $('#rs').onclick=()=>{DB.reports.push({id:Date.now(),q:id,note:$('#rn').value.trim(),by:DB.me||'misafir',at:Date.now(),open:true});save();closeModal();toast('Bildirimin editöre iletildi.')};
+};
+function scoreRing(c,n){const p=n?Math.round(c/n*100):0;return `<div class="score">${c}<span class="mut" style="font-size:1.4rem"> / ${n}</span></div><p class="mut">Doğruluk %${p}</p>`}
+
+/* ================= görünümler ================= */
+const V={};
+V.home=()=>{
+  const u=U();
+  let h=`<section class="hero"><div class="herogrid"><div><h1>Bilgini konuştur.</h1><p class="lead">Test çöz, yeni konular keşfet, rakiplerinle yarış.</p>
+   <form class="search" id="sf" role="search"><input id="sq" type="search" placeholder="Naruto, Osmanlı, Valorant… bir konu ara" aria-label="Quiz veya konu ara" autocomplete="off"><button class="btn pri" type="submit">Ara</button></form><div id="sr" aria-live="polite"></div></div><div class="brandcards"><div class="card bw">${logo(96)}<div><div class="wm">Quizlora</div><div class="tg">Çöz, öğren, yarış.</div></div></div><div class="card bd">${logo(112)}</div></div></div></section>`;
+  if(u&&u.resume){const q=quiz(u.resume.quizId);if(q)h+=`<section class="sec"><div class="card row between"><div><p class="eyebrow">Kaldığın yerden devam et</p><h3>${esc(q.t)}</h3><span class="mut sm">Soru ${u.resume.i+1} / ${q.qs.length}</span></div><a class="btn pri" href="#/oyna/${q.id}">Devam et</a></div></section>`}
+  h+=section('Öne çıkan quizler',`<div class="grid g2">${DB.quizzes.filter(q=>q.feat&&q.st!=='taslak').map(qcard).join('')||'<div class="empty">Yönetim panelinden öne çıkan quiz seçilebilir.</div>'}</div>`);
+  h+=section('En çok çözülenler',`<div class="grid g2">${[...DB.quizzes].filter(q=>q.st!=='taslak').sort((a,b)=>b.plays-a.plays||a.at-b.at).slice(0,6).map(qcard).join('')}</div>`);
+  h+=section('Yeni quizler',`<div class="grid g2">${[...DB.quizzes].filter(q=>q.st!=='taslak').sort((a,b)=>b.at-a.at).slice(0,6).map(qcard).join('')}</div>`);
+  h+=section('Bütün ana kategoriler',`<div class="grid g2">${MAINS().map(catcard).join('')}</div>`,'<a href="#/kesfet">Hepsini keşfet</a>');
+  if(u){const f=u.follows.map(cat).filter(Boolean);h+=section('Takip ettiğin konular',f.length?`<div class="row">${f.map(c=>`<a class="pill" href="#/kategori/${c.id}">${c.i} ${esc(c.n)}</a>`).join('')}</div>`:'<div class="card empty">Henüz konu takip etmiyorsun. Keşfet’ten bir kategoriyi takip edebilirsin.</div>')}
+  h+=section('Modlar',modeCards());
+  setApp(h);
+  const run=()=>{const q=$('#sq').value.trim();$('#sr').innerHTML=q?searchHtml(q):''};
+  $('#sf').addEventListener('submit',e=>{e.preventDefault();run()});$('#sq').addEventListener('input',run);
+};
+function searchHtml(q){
+  const k=norm(q);
+  const cs=DB.cats.filter(c=>norm(c.n).includes(k)),qs=DB.quizzes.filter(x=>x.st!=='taslak'&&norm(x.t).includes(k));
+  if(!cs.length&&!qs.length)return `<div class="card" style="margin-top:14px"><p>“${esc(q)}” için sonuç yok.</p><p class="mut">Başka bir sözcük dene ya da <a href="#/kesfet">kategorilere göz at</a>.</p></div>`;
+  return `<div class="grid g2" style="margin-top:14px">${cs.slice(0,6).map(c=>`<a class="catc" href="#/kategori/${c.id}"><span class="ico" style="--c:${c.c}">${c.i}</span><span>${esc(c.n)}<br><span class="mut sm" style="font-weight:600">${c.p?esc(mainOf(c.id).n):'Ana kategori'}</span></span></a>`).join('')}${qs.slice(0,6).map(qcard).join('')}</div>`;
+}
+function modeCards(){
+  const m=[['#/sonsuz','♾️','Sonsuz test','Konunu seç, istediğin kadar çöz.','var(--mint)'],['#/sinav','⏱️','Süreli sınav','25 soru, geri sayım.','var(--sun)'],['#/yolculuk','🧭','Yolculuk','Taşları geç, seviye atla.','#B9B2FF'],['#/duello','⚔️','1’e 1 düello','Yakın seviyede biriyle yarış.','#FFB3CC']];
+  return `<div class="grid g3">${m.map(x=>`<a class="mode" href="${x[0]}" style="background:${x[4]}"><span class="e">${x[1]}</span><b>${x[2]}</b><span>${x[3]}</span></a>`).join('')}</div>`;
+}
+V.kesfet=()=>{
+  const u=U();
+  setApp(`<p class="eyebrow">Keşfet</p><h1>Bir konu seç</h1>
+   <form class="search" id="sf"><input id="sq" type="search" placeholder="Quiz veya kategori ara" aria-label="Ara" autocomplete="off"><button class="btn pri" type="submit">Ara</button></form><div id="sr"></div>
+   <div class="grid g2" style="margin-top:22px" id="tree">${MAINS().map(m=>`<div class="card"><div class="row between"><a class="row" href="#/kategori/${m.id}" style="text-decoration:none;color:var(--txt)"><span class="ico" style="--c:${m.c}">${m.i}</span><h3 style="margin:0">${esc(m.n)}</h3></a>
+   ${u?`<button class="btn sm ${u.follows.includes(m.id)?'':'out'}" data-a="follow" data-id="${m.id}">${u.follows.includes(m.id)?'Takipte':'Takip et'}</button>`:''}</div>
+   <div class="row" style="margin-top:12px">${kids(m.id).map(k=>`<a class="pill" href="#/kategori/${k.id}">${esc(k.n)}</a>`).join('')}</div></div>`).join('')}</div>`);
+  const run=()=>{const q=$('#sq').value.trim();$('#sr').innerHTML=q?searchHtml(q):''};
+  $('#sf').addEventListener('submit',e=>{e.preventDefault();run()});$('#sq').addEventListener('input',run);
+};
+A.follow=t=>{const u=U();if(!u)return;const id=t.dataset.id,i=u.follows.indexOf(id);if(i>=0)u.follows.splice(i,1);else u.follows.push(id);save();route()};
+V.kategori=id=>{
+  const c=cat(id);if(!c)return V.nf();
+  const u=U(),qs=quizzesIn(id),ch=kids(id);
+  setApp(`<p class="mut sm">${crumb(id).map(x=>`<a href="#/kategori/${x.id}">${esc(x.n)}</a>`).join(' › ')}</p>
+   <div class="row between"><div class="row"><span class="ico" style="--c:${c.c};width:58px;height:58px;font-size:1.8rem">${c.i}</span><h1 style="margin:0">${esc(c.n)}</h1></div>
+   ${u?`<button class="btn ${u.follows.includes(id)?'':'out'}" data-a="follow" data-id="${id}">${u.follows.includes(id)?'Takipte':'Takip et'}</button>`:''}</div>
+   ${ch.length?`<div class="row" style="margin-top:16px">${ch.map(k=>`<a class="pill" href="#/kategori/${k.id}">${esc(k.n)}</a>`).join('')}</div>`:''}
+   <div class="row" style="margin-top:18px"><a class="btn mint" href="#/sonsuz/${id}">♾️ Sonsuz testte çöz</a><a class="btn sun" href="#/sinav/${id}">⏱️ Süreli sınav</a></div>
+   ${section('Quizler',qs.length?`<div class="grid g2">${qs.map(qcard).join('')}</div>`:`<div class="card empty"><p>Bu başlıkta henüz sabit quiz yok.</p><p>Sonsuz test veya süreli sınav ile bu konuyu çözebilirsin.</p></div>`)}`);
+};
+V.quiz=id=>{
+  const q=quiz(id);if(!q)return V.nf();
+  const u=U(),d=u?u.done[id]:G.done[id],c=cat(q.cat),m=mainOf(q.cat);
+  const resume=u&&u.resume&&u.resume.quizId===id;
+  let h=`<p class="mut sm">${crumb(q.cat).map(x=>`<a href="#/kategori/${x.id}">${esc(x.n)}</a>`).join(' › ')}</p>
+   <div class="card"><div class="row"><span class="qmark" style="width:60px;height:60px;font-size:1.7rem" aria-hidden="true">?</span><div><h1 style="margin:0;font-size:1.8rem">${esc(q.t)}</h1><span class="mut">${q.qs.length} soru · Sürüm ${q.ver}</span></div></div>
+   <p style="margin-top:16px">Herkes aynı soruları çözer. Gönderdiğin cevap değiştirilemez; sonuçlar quiz bitince gösterilir.</p>
+   <p class="mut sm">İlk tamamlamada her doğru cevap 1 kredi kazandırır. Tekrar çözmek kredi vermez, yalnızca sonucunu geliştirir.</p>
+   ${!u?'<p class="tag">Misafirsin: kredi ve kalıcı arşiv için hesap aç.</p>':''}
+   <div class="row" style="margin-top:12px"><a class="btn pri" href="#/oyna/${id}">${resume?'Devam et':(d?'Tekrar çöz':'Teste başla')}</a>${resume?`<button class="btn out" data-a="restart" data-id="${id}">Baştan başla</button>`:''}</div></div>`;
+  if(d&&d.runs.length){
+    const f=d.runs[0],l=d.runs[d.runs.length-1],b=d.runs.reduce((x,r)=>r.c>x.c?r:x,d.runs[0]);
+    h+=section('Sonuçların',`<div class="grid g3"><div class="card"><span class="mut sm">İlk sonuç</span><h3>${f.c}/${f.n}</h3><span class="mut sm">${fmtD(f.t)}</span></div><div class="card"><span class="mut sm">Son sonuç</span><h3>${l.c}/${l.n}</h3><span class="mut sm">${fmtD(l.t)}</span></div><div class="card"><span class="mut sm">En iyi sonuç</span><h3>${b.c}/${b.n}</h3><span class="mut sm">${fmtD(b.t)}</span></div></div>`);
+  }
+  setApp(h);
+};
+A.restart=t=>{const u=U();if(u){u.resume=null;save()}go('#/oyna/'+t.dataset.id)};
+V.oyna=id=>{
+  const q=quiz(id);if(!q)return V.nf();
+  const u=U();
+  let resume=null;
+  if(u&&u.resume&&u.resume.quizId===id&&u.resume.ver===q.ver)resume={i:u.resume.i,ans:u.resume.ans};
+  else if(u&&u.resume&&u.resume.quizId===id){u.resume=null;save()}
+  play({qs:q.qs,title:q.t,resume,
+    onProgress:S=>{const u=U();if(u){u.resume={quizId:id,ver:q.ver,i:Math.min(S.i+1,q.qs.length-1),ans:S.ans.slice()};save()}},
+    onEnd:res=>finishQuiz(q,res)});
+};
+function finishQuiz(q,res){
+  const u=U(),n=q.qs.length,c=res.ok.filter(Boolean).length,rec0={t:Date.now(),c,n,ver:q.ver};
+  let credits=0,first=false;
+  q.plays++;
+  if(u){
+    const d=u.done[q.id]||(u.done[q.id]={runs:[],paid:false});
+    first=d.runs.length===0;d.runs.push(rec0);
+    if(first&&!d.paid){credits=c;u.credits+=c;d.paid=true}
+    q.qs.forEach((x,k)=>rec(x,res.ok[k]));
+    u.resume=null;bump('quiz');act(u,q.t+' quizini tamamladı ('+c+'/'+n+')');touchDay(u);checkBadges();
+  }else{const d=G.done[q.id]||(G.done[q.id]={runs:[]});d.runs.push(rec0);saveG()}
+  save();chrome();
+  setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">Quiz tamamlandı</p><h1>${esc(q.t)}</h1>${scoreRing(c,n)}
+   ${u?(credits?`<p><span class="tag ok">🪙 +${credits} kredi</span></p>`:`<p class="mut">${first?'Doğru cevabın olmadığı için kredi yok.':'Tekrar çözümler kredi vermez; sonucun arşive eklendi.'}</p>`):'<p class="mut">Misafir olarak çözdün. Tamamlanma bilgisi yalnızca bu açık oturumda tutulur. Kredi ve arşiv için hesap aç.</p>'}
+   <div class="row" style="justify-content:center"><a class="btn pri" href="#/oyna/${q.id}">Tekrar çöz</a><a class="btn out" href="#/quiz/${q.id}">Quiz sayfası</a><a class="btn out" href="#/kesfet">Keşfet</a></div></div>
+   ${section('Doğru cevaplar ve açıklamalar','<div class="card">'+reviewHtml(q.qs,res)+'</div>')}</div>`);
+}
+V.modlar=()=>setApp(`<p class="eyebrow">Modlar</p><h1>Nasıl oynamak istersin?</h1>${modeCards()}
+ <div class="card" style="margin-top:20px"><h3>Kısa kurallar</h3><p class="mut">Sonsuz test ve süreli sınav misafir olarak denenebilir. Yolculuk ve sıralamalı düello için hesap gerekir. Geri dönüp cevabı değiştirme yalnızca süreli sınavda vardır.</p></div>`);
+
+/* --- yardımcı: konu seçici --- */
+function topicSelect(id,sel){
+  return `<select id="${id}" aria-label="Konu">${`<option value="mix">Genel Kültür karma (tüm alanlar)</option>`}${MAINS().map(m=>`<optgroup label="${esc(m.n)}"><option value="${m.id}" ${sel===m.id?'selected':''}>${esc(m.n)} (hepsi)</option>${kids(m.id).map(k=>`<option value="${k.id}" ${sel===k.id?'selected':''}>${esc(k.n)}</option>`).join('')}</optgroup>`).join('')}</select>`;
+}
+function poolOf(v){
+  if(v==='mix')return poolMix();
+  const m=mainOf(v);return m?poolFor(m.id):[];
+}
+/* --- sonsuz test --- */
+V.sonsuz=id=>{
+  if(!id){
+    setApp(`<div class="form card"><p class="eyebrow">Sonsuz test</p><h1>Konunu seç</h1><p class="mut">Ortak soru havuzundan art arda soru gelir. Zorluk performansına göre ayarlanır. Aynı soru sık gelmez.</p><label for="tp">Konu</label>${topicSelect('tp')}<div style="margin-top:16px"><button class="btn pri" id="go">Başla</button></div></div>`);
+    $('#go').onclick=()=>go('#/sonsuz/'+$('#tp').value);return;
+  }
+  const pool=poolOf(id);if(!pool.length)return V.nf();
+  const title=id==='mix'?'Genel Kültür karma':(cat(id)?cat(id).n:'Sonsuz test');
+  const u=U(),store=u||G;store.seen=store.seen||{};
+  const S={n:0,c:0,recent:[],diff:u?(u.skill<950?1:u.skill<1100?2:3):2,by:{},cur:null,fb:false,sel:null,earned:0};
+  CUR={abort(){}};
+  function pick(){
+    const seen=store.seen;
+    let cand=pool.filter(q=>!seen[q.id]&&q.d===S.diff);
+    if(!cand.length)cand=pool.filter(q=>!seen[q.id]).sort((a,b)=>Math.abs(a.d-S.diff)-Math.abs(b.d-S.diff)).filter((q,_,a)=>Math.abs(q.d-S.diff)===Math.abs(a[0].d-S.diff));
+    if(!cand.length)cand=[...pool].sort((a,b)=>(seen[a.id]||0)-(seen[b.id]||0)).slice(0,5);
+    return rnd(cand);
+  }
+  function draw(){
+    const q=S.cur;
+    setApp(`<div class="run"><div class="qhead"><div><b>${esc(title)}</b><br><span class="mut sm">${S.n} çözüldü · ${S.c} doğru</span></div><span class="tag">Zorluk: ${['','Kolay','Orta','Zor'][S.diff]}</span></div>
+     <div class="card"><h2 class="qt">${esc(q.q)}</h2><div class="opts">${q.o.map((o,k)=>`<button class="opt ${S.fb?(k===q.a?'good':(k===S.sel?'bad':'')):(k===S.sel?'sel':'')}" data-a="ipick" data-v="${k}" ${S.fb?'disabled':''}><i>${LET[k]}</i>${esc(o)}</button>`).join('')}</div>
+     ${S.fb?`<div class="fb" role="status"><b>${S.sel===q.a?'Doğru!':'Yanlış cevap'}</b><br>Doğru cevap: ${esc(q.o[q.a])}<br><span class="mut">${esc(q.e)}</span><br>${S.note?`<span class="tag ok">${S.note}</span>`:''}</div>`:''}
+     <div class="acts">${S.fb?'<button class="btn pri grow" data-a="inext">Sonraki soru</button>':'<button class="btn pri grow" data-a="isend" '+(S.sel==null?'disabled':'')+'>Cevabı gönder</button>'}<button class="btn out" data-a="ifin">Oturumu bitir</button></div></div></div>`);
+  }
+  function nextQ(){S.cur=pick();S.sel=null;S.fb=false;S.note='';draw()}
+  CUR={
+    abort(){},
+    ipick(k){if(!S.fb){S.sel=k;draw()}},
+    isend(){
+      if(S.fb||S.sel==null)return;const q=S.cur,ok=S.sel===q.a;
+      S.fb=true;S.n++;if(ok)S.c++;
+      store.seen[q.id]=Date.now();
+      const m=mainOf(q.cat);S.by[m.id]=S.by[m.id]||{a:0,c:0};S.by[m.id].a++;if(ok)S.by[m.id].c++;
+      S.recent.push(ok);S.recent=S.recent.slice(-5);
+      if(S.recent.length===5){const r=S.recent.filter(Boolean).length;if(r>=4){S.diff=Math.min(3,S.diff+1);S.recent=[]}else if(r<=1){S.diff=Math.max(1,S.diff-1);S.recent=[]}}
+      if(u){rec(q,ok);if(ok&&!u.credited[q.id]){u.credited[q.id]=1;u.credits+=1;S.earned++;S.note='🪙 +1 kredi (ilk doğru)'}else if(ok)S.note='Bu soruyu daha önce doğru çözdün: kredi yok';bump('inf');save();chrome()}
+      if(ok){const fx=eqItem(u,'fx');if(fx)pulse(fx.d.e)}
+      draw();
+    },
+    inext(){nextQ()},
+    ifin(){
+      CUR=null;if(u){checkBadges()}
+      const rows=Object.entries(S.by).map(([k,v])=>`<tr><td>${esc(cat(k).n)}</td><td>${v.c}/${v.a}</td><td>%${Math.round(v.c/v.a*100)}</td></tr>`).join('');
+      setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">Oturum özeti</p><h1>${esc(title)}</h1>${S.n?scoreRing(S.c,S.n):'<p class="mut">Hiç soru çözmedin.</p>'}<p class="mut">Çözülen soru: ${S.n} · Kazanılan kredi: ${u?S.earned:'hesapla kazanılır'}</p>
+       ${rows?`<div class="tw"><table><tr><th>Konu</th><th>Doğru</th><th>Oran</th></tr>${rows}</table></div>`:''}
+       <div class="row" style="justify-content:center;margin-top:14px"><a class="btn pri" href="#/sonsuz/${id}">Yeni oturum</a><a class="btn out" href="#/modlar">Modlar</a></div></div></div>`);
+    }
+  };
+  nextQ();
+};
+A.ipick=t=>CUR&&CUR.ipick(+t.dataset.v);A.isend=()=>CUR&&CUR.isend();A.inext=()=>CUR&&CUR.inext();A.ifin=()=>CUR&&CUR.ifin();
+
+/* --- süreli sınav --- */
+V.sinav=id=>{
+  setApp(`<div class="form card"><p class="eyebrow">Süreli sınav</p><h1>25 soruluk sınav</h1><p class="mut">Pas geçebilir, önceki sorulara dönüp cevabını değiştirebilirsin. Süre dolunca sınav otomatik biter.</p>
+   <label for="tp">Konu</label>${topicSelect('tp',id)}
+   <label for="df">Zorluk</label><select id="df"><option value="1">Kolay (12 dakika)</option><option value="2" selected>Normal (10 dakika)</option><option value="3">Zor (8 dakika)</option></select>
+   <label><input type="checkbox" id="ty" style="width:auto;min-height:0;margin-right:8px">Ek zorluk: şıksız, cevabı yazarak ver</label>
+   <div style="margin-top:16px"><button class="btn pri" id="go">Sınavı başlat</button></div></div>`);
+  if(id&&$('#tp'))$('#tp').value=id;
+  $('#go').onclick=()=>{
+    const v=$('#tp').value,df=+$('#df').value,typed=$('#ty').checked,pool=poolOf(v);
+    if(!pool.length)return toast('Bu konuda soru bulunamadı.');
+    const want=q=>df===1?q.d<=2:df===3?q.d>=2:true;
+    let qs=shuffle(pool.filter(want)).slice(0,25);
+    if(qs.length<25)qs=qs.concat(shuffle(pool.filter(q=>!qs.includes(q))).slice(0,25-qs.length));
+    const mins=[0,12,10,8][df],u=U();
+    play({qs,title:'Süreli sınav',back:true,typed,limit:mins*60,
+      onEnd:res=>{
+        const c=res.ok.filter(Boolean).length;let earned=0;
+        if(u){qs.forEach((q,k)=>{rec(q,res.ok[k]);if(res.ok[k]&&!u.credited[q.id]){u.credited[q.id]=1;u.credits++;earned++}});bump('exam');act(u,'Süreli sınav: '+c+'/25');checkBadges();save();chrome()}
+        setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">${res.reason==='time'?'Süre doldu':'Sınav bitti'}</p><h1>Sonucun</h1>${scoreRing(c,25)}
+         ${u?`<p class="mut">İlk kez doğru bildiğin sorulardan ${earned} kredi kazandın.</p>`:'<p class="mut">Kredi için hesap aç.</p>'}
+         <div class="row" style="justify-content:center"><a class="btn pri" href="#/sinav">Yeni sınav</a><a class="btn out" href="#/modlar">Modlar</a></div></div>
+         ${section('Doğru cevaplar ve açıklamalar','<div class="card">'+reviewHtml(qs,res,typed)+'</div>')}</div>`);
+      }});
+  };
+};
+
+/* --- yolculuk --- */
+const stoneTime=L=>{const t=DB.s.stoneTimes[L];return t>0?t:Math.max(20,DB.s.stoneBase-(L-1)*DB.s.stoneStep)};
+const groupOf=L=>DB.s.groups[Math.floor((L-1)/5)%DB.s.groups.length];
+function journeyFail(u,msg){u.j.active=false;u.j.cool=Date.now()+DB.s.cool*60000;save()}
+V.yolculuk=()=>{
+  const u=U();
+  if(!u)return setApp(`<div class="form card" style="text-align:center"><p class="eyebrow">Yolculuk</p><h1>İlerlemeni saklamak için giriş yap</h1><p class="mut">Yolculukta taşların ve seviyen hesabına kaydedilir.</p><a class="btn pri" href="#/giris">Giriş yap</a> <a class="btn out" href="#/kayit">Hesap aç</a></div>`);
+  if(u.j.active){journeyFail(u);toast('Yarım bıraktığın deneme yanlış sayıldı.')}
+  const j=u.j,now=Date.now(),L=j.level,cool=j.cool>now;
+  const st=eqItem(u,'stone'),sty=st?`background:${st.d.c};border-radius:${st.d.r};border-color:${st.d.c};color:var(--ink)`:'';
+  let lv='';
+  for(let s=5;s>=1;s--){
+    const state=s<j.stone?'done':s===j.stone?(cool?'cool':'cur'):'';
+    lv+=`<div class="stone ${state} ${s===5?'final':''}" style="${state==='done'&&sty?sty:''}" aria-label="Taş ${s}, ${state==='done'?'geçildi':state==='cur'?'şu anki taş':state==='cool'?'bekleme':'kilitli'}">${state==='done'?'✓':state==='cool'?'⏳':state==='cur'?s:'🔒'}<small>${s===5?'Seviye atlama':'Taş '+s}</small></div>${s>1?`<div class="seg ${s<=j.stone?'d':''}"></div>`:''}`;
+  }
+  const grp=groupOf(L).map(id=>cat(id).n);
+  setApp(`<p class="eyebrow">Yolculuk</p><h1>Seviye ${L}</h1>
+   <div class="card"><div class="row between"><div><b>Şu anki taş: ${j.stone}${j.stone===5?' (süreli · '+fmtT(stoneTime(L))+')':''}</b><p class="mut sm" style="margin:0">Alanlar: ${grp.map(esc).join(', ')}</p></div>
+   <div>${cool?`<span class="tag" id="cd">Bekleme: ${fmtLeft(j.cool-now)}</span>`:`<button class="btn pri" data-a="jstart">Taşa gir</button>`}</div></div>
+   <p class="mut sm" style="margin-top:10px">Her taşta 5 soru var ve her biri farklı bir alandan gelir. Tek yanlış denemeyi bitirir. Başarısız olursan aynı taşı ${DB.s.cool/60} saat sonra yeniden denersin; geçtiğin taşlar kaybolmaz.</p></div>
+   <div class="card sec"><div class="path" aria-label="Seviye ${L} yolu">${lv}</div><p class="mut sm" style="text-align:center">Seviye ${L-1>0?(L-1)+' seviye tamamlandı':'yolculuğun başlangıcı'}</p></div>`);
+  if(cool)every(()=>{const e=$('#cd'),l=u.j.cool-Date.now();if(l<=0)route();else if(e)e.textContent='Bekleme: '+fmtLeft(l)},1000);
+};
+A.jstart=()=>{
+  const u=U();if(!u)return;const j=u.j,L=j.level;
+  if(j.cool>Date.now())return toast('Bu taş için bekleme sürüyor.');
+  const grp=shuffle(groupOf(L)),qs=[],need=L<=3?1:L<=8?2:3;
+  for(const mid of grp){
+    const pool=poolFor(mid).filter(q=>!j.seen[q.id]);
+    if(!pool.length)return toast('“'+cat(mid).n+'” alanında yeni soru kalmadı. Yönetici soru ekleyince devam edebilirsin.');
+    const best=pool.sort((a,b)=>Math.abs(a.d-need)-Math.abs(b.d-need));
+    const top=best.filter(q=>Math.abs(q.d-need)===Math.abs(best[0].d-need));
+    qs.push(rnd(top));
+  }
+  j.active=true;save();
+  const timed=j.stone===5,stoneNo=j.stone;
+  play({qs,title:`Seviye ${L} · Taş ${stoneNo}`,instant:true,failFast:true,limit:timed?stoneTime(L):0,
+    onShow:q=>{u.j.seen[q.id]=1;save()},
+    onAbort:()=>{if(U()&&U().j.active){journeyFail(U())}},
+    onEnd:res=>{
+      const pass=res.ok.every(Boolean)&&res.ok.length===5;
+      u.j.active=false;
+      if(pass){
+        bump('stone');
+        if(stoneNo===5){u.j.level++;u.j.stone=1}else u.j.stone++;
+        act(u,`Yolculuk: Seviye ${L} taş ${stoneNo} geçildi`);checkBadges();save();
+        setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">Taş geçildi</p><h1>${stoneNo===5?'Seviye '+L+' tamamlandı!':'Harika!'}</h1><p class="mut">${stoneNo===5?'Seviye '+(L+1)+' seni bekliyor.':'Sıradaki taş açıldı.'}</p><a class="btn pri" href="#/yolculuk">Yol haritası</a></div></div>`);
+      }else{
+        journeyFail(u);
+        setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">${res.reason==='time'?'Süre doldu':'Deneme bitti'}</p><h1>Bu taşta kaldın</h1><p class="mut">Geçtiğin taşlar durur. Aynı taşı ${DB.s.cool/60} saat sonra yeniden deneyebilirsin; yeni denemede 5 soru da değişir.</p><a class="btn pri" href="#/yolculuk">Yol haritası</a></div></div>`);
+      }
+    }});
+};
+
+/* --- düello (demo rakip) --- */
+V.duello=()=>{
+  const u=U();
+  setApp(`<p class="eyebrow">1’e 1 düello</p><h1>Rakibini bul</h1>
+   <div class="grid g2"><div class="card"><h3>⚔️ Sıralamalı düello</h3><p class="mut">Beceri puanı yakın biriyle 5 tur: Bilim, Genel Kültür, Tarih, Spor, Coğrafya. Her doğru 10 puan. Eşitlikte toplam cevaplama süresi belirler.</p>${u?`<button class="btn pri" data-a="duel" data-m="ranked">Eşleşme ara</button>`:'<a class="btn pri" href="#/giris">Giriş yap</a>'}</div>
+   <div class="card"><h3>🤝 Arkadaşla özel düello</h3><p class="mut">Kredi kazandırmaz, beceri puanını değiştirmez. Arkadaşlar sekmesinden davet gönderebilirsin.</p>${u?'<a class="btn out" href="#/profil/arkadaslar">Arkadaşlara git</a>':'<a class="btn out" href="#/giris">Giriş yap</a>'}</div></div>
+   <div class="card sec"><h3>Demo uyarısı</h3><p class="mut">Gerçek rakiple eşleşme sunucu bağlantısı gerektirir; bu sürümde eşleşme bir demo rakiple oynanır. Demo maçlar kredi vermez ve beceri puanını değiştirmez.</p></div>`);
+};
+A.duel=t=>duelRun(t.dataset.m||'friend');
+function duelRun(mode){
+  const u=U();if(!u)return go('#/giris');
+  const names=['Bilim','Genel Kültür','Tarih','Spor','Coğrafya'];
+  const qs=names.map(nm=>{const m=MAINS().find(c=>c.n===nm);return rnd(poolFor(m.id))});
+  const D={r:0,me:0,op:0,tm:0,to:0,ans:null,opA:null,phase:'wait',ms:0,start:0,opMs:0};
+  const sec=DB.s.duelSec;
+  const intro=eqItem(u,'intro');
+  setApp(`<div class="card" style="text-align:center;max-width:520px;margin:30px auto"><div class="spinner"></div><h2 style="margin-top:18px">Rakip aranıyor…</h2><p class="mut">Beceri puanın: ${u.skill}</p><button class="btn out" data-a="dquit">Vazgeç</button></div>`);
+  CUR={abort(){}, dquit(){go('#/duello')}};
+  later(()=>{
+    if(!CUR)return;
+    setApp(`<div class="card" style="max-width:560px;margin:30px auto"><div class="vs"><div>${avatar(u,64)}<br><b>${nameHtml(u)}</b></div><b class="${intro?intro.d.k:''}" style="font-size:2rem">VS</b><div><span class="av" style="width:64px;height:64px;font-size:30px">🤖</span><br><b>Demo Rakip</b></div></div><p class="mut" style="text-align:center;margin-top:14px">${mode==='ranked'?'Sıralamalı':'Özel'} demo maç · kredi ve puan etkilenmez</p></div>`);
+    later(round,1800);
+  },1800);
+  function round(){
+    if(!CUR)return;D.phase='ans';D.ans=null;D.start=Date.now();D.end=D.start+sec*1000;
+    const q=qs[D.r],opOk=Math.random()<.6,opDelay=2000+Math.random()*(sec*600);
+    D.opA=opOk?q.a:rnd([0,1,2,3].filter(x=>x!==q.a));D.opAt=D.start+opDelay;
+    drawQ();
+  }
+  function drawQ(){
+    const q=qs[D.r];
+    setApp(`<div class="run"><div class="qhead"><div><b>Tur ${D.r+1} / 5 · ${names[D.r]}</b><br><span class="mut sm">Sen ${D.me} · Rakip ${D.op}</span></div><div class="clock" id="clk" role="timer"></div></div><div class="bar"><i style="width:${D.r/5*100}%"></i></div>
+     <div class="card"><h2 class="qt">${esc(q.q)}</h2><div class="opts">${q.o.map((o,k)=>`<button class="opt ${D.ans===k?'sel':''}" data-a="dpick" data-v="${k}" ${D.ans!=null?'disabled':''}><i>${LET[k]}</i>${esc(o)}</button>`).join('')}</div>
+     <p class="mut sm" style="margin-top:12px">${D.ans!=null?'Cevabın gönderildi. Rakibi bekliyorsun…':'Rakibin cevabı tur bitene kadar görünmez.'}</p><div class="acts"><button class="btn out sm" data-a="dquit2">Bağlantıyı kopar (demo)</button></div></div></div>`);
+    tickD();
+  }
+  function tickD(){
+    const el=$('#clk');if(el){const s=(D.end-Date.now())/1000;el.textContent='⏱ '+fmtT(s);el.classList.toggle('low',s<5)}
+    if(D.phase!=='ans')return;
+    const opDone=Date.now()>=D.opAt;
+    if((D.ans!=null&&opDone)||Date.now()>=D.end)reveal();
+  }
+  every(tickD,300);
+  function reveal(){
+    if(D.phase!=='ans')return;D.phase='rev';
+    const q=qs[D.r],now=Date.now();
+    const myOk=D.ans===q.a,opOk=D.opA===q.a;
+    if(myOk)D.me++;if(opOk)D.op++;
+    D.tm+=D.ans!=null?D.ms:sec*1000;D.to+=Math.min(D.opAt,D.end)-D.start;
+    const last=D.r===4;
+    setApp(`<div class="run"><div class="qhead"><b>Tur ${D.r+1} sonucu</b><span class="tag">Skor ${D.me*10} – ${D.op*10}</span></div><div class="card"><h2 class="qt">${esc(q.q)}</h2>
+     <div class="opts">${q.o.map((o,k)=>`<div class="opt ${k===q.a?'good':(k===D.ans||k===D.opA?'bad':'')}"><i>${LET[k]}</i><span style="flex:1">${esc(o)}</span><span class="tag">${k===D.ans?'Sen ':''}${k===D.opA?'Rakip':''}</span></div>`).join('')}</div>
+     <p style="margin-top:12px">Sen: ${D.ans==null?'Süre doldu':(myOk?'Doğru':'Yanlış')} · Rakip: ${opOk?'Doğru':'Yanlış'}</p><p class="mut">${esc(q.e)}</p>
+     <div class="acts"><button class="btn pri grow" data-a="dnext">${last?'Maçı bitir':'Sonraki tur'}</button></div></div></div>`);
+  }
+  CUR.dpick=k=>{if(D.phase!=='ans'||D.ans!=null)return;D.ans=k;D.ms=Date.now()-D.start;drawQ()};
+  CUR.dnext=()=>{if(D.r>=4)finish('done');else{D.r++;round()}};
+  CUR.dquit2=()=>finish('drop');
+  function finish(why){
+    CUR=null;u.duels++;bump('duel');act(u,'Düello oynadı (demo)');checkBadges();save();
+    const win=D.me>D.op||(D.me===D.op&&D.tm<D.to),draw=D.me===D.op&&D.tm===D.to;
+    setApp(`<div class="run"><div class="card" style="text-align:center"><p class="eyebrow">${why==='drop'?'Bağlantı koptu · maç bitti':'Maç bitti'}</p><h1>${why==='drop'?'Maç yarıda kaldı':(draw?'Berabere':win?'Kazandın!':'Rakip kazandı')}</h1>
+     <div class="score">${D.me*10} – ${D.op*10}</div><p class="mut">Toplam süre: ${(D.tm/1000).toFixed(1)} sn – ${(D.to/1000).toFixed(1)} sn</p>
+     <p class="tag">Demo maç: kredi ve beceri puanı değişmedi</p><div class="row" style="justify-content:center;margin-top:12px"><a class="btn pri" href="#/duello">Düelloya dön</a></div></div></div>`);
+  }
+}
+A.dquit=()=>CUR&&CUR.dquit&&CUR.dquit();A.dpick=t=>CUR&&CUR.dpick&&CUR.dpick(+t.dataset.v);A.dnext=()=>CUR&&CUR.dnext&&CUR.dnext();A.dquit2=()=>CUR&&CUR.dquit2&&CUR.dquit2();
+
+/* --- sıralamalar --- */
+function board(t0,t1,cid){
+  const rows=[];
+  Object.values(DB.users).forEach(u=>{
+    const s=new Set();
+    u.log.forEach(l=>{if(l.ok&&l.t>=t0&&(!t1||l.t<=t1)&&(!cid||l.c===cid))s.add(l.q)});
+    if(s.size)rows.push({u,p:s.size*10});
+  });
+  return rows.sort((a,b)=>b.p-a.p);
+}
+V.siralamalar=(arg)=>{
+  const sp=new URLSearchParams(arg||'');const tab=sp.get('t')||'hafta',cid=sp.get('c')||MAINS()[0].id,sid=+sp.get('s')||DB.seasons[DB.seasons.length-1].id;
+  const season=DB.seasons.find(s=>s.id===sid)||DB.seasons[DB.seasons.length-1];
+  let rows,sub='';
+  if(tab==='hafta'){rows=board(weekStart().getTime(),0,null);sub='Bu hafta'}
+  else if(tab==='sezon'){rows=board(season.a,season.b,null);sub=season.n+(season.b?' (bitti)':' (sürüyor)')}
+  else{rows=board(0,0,cid);sub=cat(cid).n+' · tüm zamanlar'}
+  const me=U(),myi=me?rows.findIndex(r=>r.u.name===me.name):-1;
+  setApp(`<p class="eyebrow">Sıralamalar</p><h1>Liderlik tabloları</h1>
+   <div class="tabs"><a href="#/siralamalar?t=hafta" class="${tab==='hafta'?'on':''}">Haftalık</a><a href="#/siralamalar?t=sezon" class="${tab==='sezon'?'on':''}">Sezonluk</a><a href="#/siralamalar?t=kat" class="${tab==='kat'?'on':''}">Kategori</a></div>
+   ${tab==='kat'?`<select id="ksel" aria-label="Kategori" style="max-width:340px">${MAINS().map(m=>`<option value="${m.id}" ${m.id===cid?'selected':''}>${esc(m.n)}</option>`).join('')}</select>`:''}
+   ${tab==='sezon'?`<select id="ssel" aria-label="Sezon" style="max-width:340px">${DB.seasons.map(s=>`<option value="${s.id}" ${s.id===season.id?'selected':''}>${esc(s.n)}${s.b?'':' (güncel)'}</option>`).join('')}</select>`:''}
+   <p class="mut" style="margin-top:12px">${esc(sub)} · Aynı soruyu tekrar çözmek puanı artırmaz.</p>
+   ${me?(myi>=0?`<div class="card" style="margin-bottom:14px"><b>Senin yerin: ${myi+1}. sıra</b> · ${rows[myi].p} puan</div>`:'<div class="card" style="margin-bottom:14px">Bu listede henüz puanın yok. Bir quiz çöz ve sıraya gir.</div>'):'<div class="card" style="margin-bottom:14px">Sıralamaya girmek için <a href="#/giris">giriş yap</a>.</div>'}
+   <div class="card tw">${rows.length?`<table><tr><th>Sıra</th><th>Oyuncu</th><th>Puan</th></tr>${rows.slice(0,50).map((r,i)=>`<tr ${me&&r.u.name===me.name?'style="background:var(--soft)"':''}><td>${i+1}</td><td><a href="#/u/${encodeURIComponent(r.u.name)}" class="row" style="text-decoration:none;color:var(--txt)">${avatar(r.u,32)} ${nameHtml(r.u)}</a></td><td>${r.p}</td></tr>`).join('')}</table>`:'<div class="empty">Bu dönemde henüz sıralamaya giren oyuncu yok.</div>'}</div>`);
+  const k=$('#ksel');if(k)k.onchange=()=>go('#/siralamalar?t=kat&c='+k.value);
+  const s=$('#ssel');if(s)s.onchange=()=>go('#/siralamalar?t=sezon&s='+s.value);
+};
+
+/* --- görevler --- */
+V.gorevler=()=>{
+  const u=U();
+  if(!u)return setApp(`<div class="form card" style="text-align:center"><p class="eyebrow">Görevler</p><h1>Görevler hesapla takip edilir</h1><p class="mut">Günlük ve haftalık görevler, seri ve rozetler için giriş yap.</p><a class="btn pri" href="#/giris">Giriş yap</a></div>`);
+  const row=m=>{
+    const pk=(m.per==='d'?'d'+dayKey():'w'+weekKey()),v=Math.min(m.target,u.m[pk+':'+m.metric]||0),done=v>=m.target,ck=m.id+':'+pk,cl=u.claimed[ck];
+    return `<div class="card"><div class="row between"><div><b>${esc(m.t)}</b><br><span class="mut sm">${v} / ${m.target}${m.reward>0?' · Ödül: 🪙 '+m.reward:''}</span></div>${cl?'<span class="tag ok">Alındı</span>':done?`<button class="btn mint sm" data-a="claim" data-m="${m.id}">Tamamla${m.reward>0?' +'+m.reward:''}</button>`:''}</div><div class="meter" style="margin-top:10px"><i style="width:${v/m.target*100}%"></i></div></div>`};
+  setApp(`<p class="eyebrow">Görevler</p><h1>Görevler</h1>
+   <div class="grid g3"><div class="card"><span class="mut sm">Katılım serisi</span><h2>🔥 ${u.streak} gün</h2><span class="mut sm">Bir gün kaçırırsan yalnızca seri sıfırlanır; gelişimin kalır.</span></div><div class="card"><span class="mut sm">Rozetler</span><h2>🏅 ${u.badges.length} / ${BADGES.length}</h2><a href="#/profil/basarilar">Rozetlerim</a></div></div>
+   ${section('Günlük görevler','<div class="grid g2">'+DB.missions.filter(m=>m.per==='d').map(row).join('')+'</div>')}
+   ${section('Haftalık görevler','<div class="grid g2">'+DB.missions.filter(m=>m.per==='w').map(row).join('')+'</div>')}`);
+};
+A.claim=t=>{
+  const u=U(),m=DB.missions.find(x=>x.id===t.dataset.m);if(!u||!m)return;
+  const pk=m.per==='d'?'d'+dayKey():'w'+weekKey(),ck=m.id+':'+pk;
+  if(u.claimed[ck]||(u.m[pk+':'+m.metric]||0)<m.target)return;
+  u.claimed[ck]=1;if(m.reward>0)u.credits+=m.reward;save();chrome();toast(m.reward>0?'🪙 +'+m.reward+' kredi':'Görev tamamlandı');route();
+};
+
+/* --- mağaza --- */
+V.magaza=(arg)=>{
+  const u=U(),sp=new URLSearchParams(arg||''),tp=sp.get('t')||'all';
+  const list=DB.store.filter(i=>i.on&&(tp==='all'||i.type===tp));
+  setApp(`<p class="eyebrow">Mağaza</p><div class="row between"><h1>Görünüm ürünleri</h1>${u?`<span class="chipc">🪙 ${u.credits} kredi</span>`:''}</div>
+   <p class="mut">Mağazadaki hiçbir ürün oyun avantajı vermez. Kazanılması gereken başarı rozetleri satılmaz.</p>
+   <div class="tabs"><a href="#/magaza" class="${tp==='all'?'on':''}">Tümü</a>${STORE_TYPES.map(t=>`<a href="#/magaza?t=${t[0]}" class="${tp===t[0]?'on':''}">${t[1]}</a>`).join('')}</div>
+   <div class="grid g3">${list.map(i=>{
+     const own=u&&u.owned.includes(i.id),used=u&&u.eq[i.type]===i.id;
+     return `<div class="card">${preview(i)}<h3 style="margin-top:12px">${esc(i.n)}</h3><span class="mut sm">${STORE_TYPES.find(t=>t[0]===i.type)[1]}</span>
+      <div class="row between" style="margin-top:10px"><b>${i.price==null?'<span class="mut">Fiyat belirlenmedi</span>':'🪙 '+i.price}</b>
+      ${own?(used?'<span class="tag ok">Kullanılıyor</span><button class="btn sm out" data-a="unuse" data-t="'+i.type+'">Bırak</button>':`<button class="btn sm mint" data-a="use" data-id="${i.id}">Kullan</button>`):`<button class="btn sm pri" data-a="buy" data-id="${i.id}" ${i.price==null?'disabled':''}>Satın al</button>`}</div></div>`}).join('')}</div>`);
+};
+A.buy=t=>{
+  const u=U();if(!u){go('#/giris');return}
+  const i=item(t.dataset.id);if(!i||i.price==null)return;
+  if(u.owned.includes(i.id))return toast('Bu ürüne zaten sahipsin.');
+  if(u.credits<i.price)return toast('Yeterli kredin yok. '+(i.price-u.credits)+' kredi daha gerekli.');
+  confirmBox('Satın alma onayı',`<b>${esc(i.n)}</b> ürünü <b>${i.price} kredi</b> karşılığında alınacak. Bu ürün oyun avantajı vermez.`,'Satın al',()=>{
+    if(u.owned.includes(i.id)||u.credits<i.price)return;
+    u.credits-=i.price;u.owned.push(i.id);act(u,i.n+' satın aldı');checkBadges();save();chrome();toast('Koleksiyonuna eklendi.');route();
+  });
+};
+A.use=t=>{const u=U(),i=item(t.dataset.id);if(!u||!i||!u.owned.includes(i.id))return;u.eq[i.type]=i.id;save();chrome();route()};
+A.unuse=t=>{const u=U();if(!u)return;delete u.eq[t.dataset.t];save();chrome();route()};
+
+/* --- giriş / kayıt --- */
+V.giris=()=>{
+  setApp(`<form class="form card" id="lf"><p class="eyebrow">Hoş geldin</p><h1>Giriş yap</h1><label for="l1">Kullanıcı adı veya e-posta</label><input id="l1" autocomplete="username" required><label for="l2">Şifre</label><input id="l2" type="password" autocomplete="current-password" required><p class="err" id="le" role="alert"></p><button class="btn pri" style="width:100%">Giriş yap</button><p style="text-align:center;margin-top:14px" class="mut">Hesabın yok mu? <a href="#/kayit">Hesap aç</a></p></form>`);
+  $('#lf').onsubmit=async e=>{
+    e.preventDefault();const k=$('#l1').value.trim().toLowerCase();
+    const u=DB.users[k]||Object.values(DB.users).find(x=>x.email.toLowerCase()===k);
+    if(!u||u.hash!==await sha($('#l2').value)){$('#le').textContent='Kullanıcı adı veya şifre hatalı.';return}
+    DB.me=u.name.toLowerCase();touchDay(u);save();chrome();go('#/profil');
+  };
+};
+V.kayit=()=>{
+  setApp(`<form class="form card" id="rf"><p class="eyebrow">Aramıza katıl</p><h1>Hesap aç</h1><label for="r1">Kullanıcı adı</label><input id="r1" minlength="3" maxlength="20" autocomplete="username" required><label for="r2">E-posta</label><input id="r2" type="email" autocomplete="email" required><label for="r3">Şifre (en az 6 karakter)</label><input id="r3" type="password" minlength="6" autocomplete="new-password" required><p class="err" id="re" role="alert"></p><button class="btn pri" style="width:100%">Hesap aç</button><p style="text-align:center;margin-top:14px" class="mut">Zaten hesabın var mı? <a href="#/giris">Giriş yap</a></p></form>`);
+  $('#rf').onsubmit=async e=>{
+    e.preventDefault();const n=$('#r1').value.trim(),em=$('#r2').value.trim(),pw=$('#r3').value;
+    if(!/^[\p{L}0-9_.-]{3,20}$/u.test(n))return $('#re').textContent='Kullanıcı adı 3–20 karakter olmalı; harf, rakam, _ . - kullanabilirsin.';
+    if(pw.length<6)return $('#re').textContent='Şifre en az 6 karakter olmalı.';
+    if(DB.users[n.toLowerCase()])return $('#re').textContent='Bu kullanıcı adı alınmış.';
+    if(Object.values(DB.users).some(x=>x.email.toLowerCase()===em.toLowerCase()))return $('#re').textContent='Bu e-posta ile bir hesap var.';
+    const first=!Object.keys(DB.users).length;
+    const u=newUser(n,em,await sha(pw),first);
+    Object.keys(G.done).forEach(id=>{u.done[id]={runs:G.done[id].runs,paid:true}});
+    DB.users[n.toLowerCase()]=u;DB.me=n.toLowerCase();touchDay(u);act(u,'Hesap açtı');save();chrome();go('#/seviye');
+  };
+};
+V.seviye=()=>{
+  const u=U();if(!u)return go('#/giris');
+  if(u.placed)return go('#/profil');
+  setApp(`<div class="form card" style="text-align:center"><p class="eyebrow">Hoş geldin ${esc(u.name)}</p><h1>Seviyeni belirleyelim</h1><p class="mut">10 soruluk kısa bir test, başlangıç beceri puanını tahmin eder. Sonraki cevaplarınla puan güncellenir.</p><div class="row" style="justify-content:center"><button class="btn pri" id="ps">Testi başlat</button><button class="btn out" id="pk">Şimdi değil</button></div></div>`);
+  $('#pk').onclick=()=>{u.placed=true;save();go('#/profil')};
+  $('#ps').onclick=()=>{
+    const mains=shuffle(MAINS()).slice(0,5),qs=[];
+    mains.forEach(m=>{const p=poolFor(m.id);qs.push(rnd(p.filter(q=>q.d===1)),rnd(p.filter(q=>q.d===3)))});
+    play({qs:shuffle(qs),title:'Seviye belirleme',onEnd:res=>{
+      const c=res.ok.filter(Boolean).length;u.skill=800+c*40;u.placed=true;act(u,'Seviye belirleme: '+c+'/10');save();chrome();
+      setApp(`<div class="form card" style="text-align:center"><p class="eyebrow">İlk tahmin</p><h1>Beceri puanın ${u.skill}</h1>${scoreRing(c,10)}<p class="mut">Bu ilk tahmindir; çözdükçe güncellenir.</p><a class="btn pri" href="#/profil">Profilime git</a></div>`);
+    }});
+  };
+};
+
+/* --- profil --- */
+const PT=[['genel','Genel Bakış'],['tamamlananlar','Tamamlananlar'],['gelisim','Gelişim'],['yolculugum','Yolculuğum'],['basarilar','Başarılar'],['koleksiyon','Koleksiyonum'],['arkadaslar','Arkadaşlar'],['ayarlar','Ayarlar']];
+function pct(o){return o&&o.a?Math.round(o.c/o.a*100):null}
+V.profil=tab=>{
+  const u=U();if(!u)return go('#/giris');tab=tab||'genel';
+  const bg=eqItem(u,'bg'),th=eqItem(u,'theme');
+  let b='';
+  if(tab==='genel'){
+    const fav=u.follows.map(cat).filter(Boolean);
+    b=`<div class="grid g3"><div class="card"><span class="mut sm">Kredi</span><h2>🪙 ${u.credits}</h2></div><div class="card"><span class="mut sm">Beceri puanı</span><h2>⭐ ${u.skill}</h2></div><div class="card"><span class="mut sm">Seri</span><h2>🔥 ${u.streak} gün</h2></div></div>
+     ${section('Favori kategoriler',fav.length?`<div class="row">${fav.map(c=>`<a class="pill" href="#/kategori/${c.id}">${c.i} ${esc(c.n)}</a>`).join('')}</div>`:'<div class="card empty">Keşfet’ten kategori takip et; burada görünsün.</div>')}
+     ${section('Son etkinlik',u.acts.length?`<div class="card">${u.acts.slice(0,8).map(a=>`<div class="rev" style="padding:8px 0">${esc(a.x)} <span class="mut sm">· ${fmtD(a.t)}</span></div>`).join('')}</div>`:'<div class="card empty">Henüz etkinlik yok. İlk quizini çöz!</div>')}
+     <div class="row" style="margin-top:18px"><a class="btn sun" href="#/oner">Soru öner</a></div>`;
+  }else if(tab==='tamamlananlar'){
+    const ids=Object.keys(u.done);
+    b=ids.length?`<div class="card tw"><table><tr><th>Quiz</th><th>İlk</th><th>Son</th><th>En iyi</th><th>Tarih</th></tr>${ids.map(id=>{const d=u.done[id],q=quiz(id);if(!q)return'';const r=d.runs,f=r[0],l=r[r.length-1],bs=r.reduce((x,y)=>y.c>x.c?y:x,r[0]);return `<tr><td><a href="#/quiz/${id}">${esc(q.t)}</a></td><td>${f.c}/${f.n}</td><td>${l.c}/${l.n}</td><td>${bs.c}/${bs.n}</td><td>${fmtD(f.t)}${r.length>1?' → '+fmtD(l.t):''}</td></tr>`}).join('')}</table></div>`:'<div class="card empty"><p>Henüz bir quiz tamamlamadın.</p><a class="btn pri" href="#/kesfet">Quiz bul</a></div>';
+  }else if(tab==='gelisim'){
+    const ms=MAINS().filter(m=>u.cat[m.id]),strong=[...ms].sort((a,c)=>pct(u.cat[c.id])-pct(u.cat[a.id])).slice(0,3),weak=[...ms].sort((a,c)=>pct(u.cat[a.id])-pct(u.cat[c.id])).slice(0,3);
+    const days=Array.from({length:14},(_,k)=>{const d=new Date(Date.now()-(13-k)*864e5);const key=new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);return{key,n:0}});
+    u.log.forEach(l=>{const key=new Date(l.t-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);const d=days.find(x=>x.key===key);if(d)d.n++});
+    const mx=Math.max(1,...days.map(d=>d.n));
+    b=ms.length?`<div class="grid g2"><div class="card"><h3>Güçlü alanlar</h3>${strong.map(m=>`<p>${m.i} ${esc(m.n)} <b>%${pct(u.cat[m.id])}</b></p>`).join('')}</div><div class="card"><h3>Gelişmesi gereken alanlar</h3>${weak.map(m=>`<p>${m.i} ${esc(m.n)} <b>%${pct(u.cat[m.id])}</b></p>`).join('')}</div></div>
+     ${section('Kategori performansı',`<div class="card">${ms.map(m=>`<div style="margin-bottom:12px"><div class="row between"><span>${m.i} ${esc(m.n)}</span><span class="mut sm">${u.cat[m.id].c}/${u.cat[m.id].a} · %${pct(u.cat[m.id])}</span></div><div class="meter"><i style="width:${pct(u.cat[m.id])}%"></i></div></div>`).join('')}</div>`)}
+     ${section('Alt konu doğruluğu',`<div class="card tw"><table><tr><th>Alt konu</th><th>Doğru</th><th>Oran</th></tr>${Object.entries(u.sub).filter(([k])=>cat(k)).map(([k,v])=>`<tr><td>${esc(cat(k).n)}</td><td>${v.c}/${v.a}</td><td>%${pct(v)}</td></tr>`).join('')}</table></div>`)}
+     ${section('Son 14 gün',`<div class="card"><div style="display:flex;align-items:flex-end;gap:5px;height:120px" role="img" aria-label="Son 14 günde çözülen soru sayısı">${days.map(d=>`<div title="${d.key}: ${d.n}" style="flex:1;background:var(--pu);border-radius:6px 6px 0 0;height:${Math.max(3,d.n/mx*100)}%"></div>`).join('')}</div><p class="mut sm">Günlük çözülen soru sayısı</p></div>`)}
+     ${section('Son quizler',`<div class="card">${Object.entries(u.done).flatMap(([id,d])=>d.runs.map(r=>({id,r}))).sort((a,c)=>c.r.t-a.r.t).slice(0,5).map(x=>`<div class="rev" style="padding:8px 0">${esc(quiz(x.id)?quiz(x.id).t:'')} <b>${x.r.c}/${x.r.n}</b> <span class="mut sm">${fmtD(x.r.t)}</span></div>`).join('')||'<span class="mut">Henüz quiz yok.</span>'}</div>`)}
+     <div class="card sec">Yolculuk seviyen: <b>${u.j.level}</b></div>`:`<div class="card empty"><p>Gelişim grafikleri için birkaç soru çöz.</p><a class="btn pri" href="#/sonsuz">Sonsuz teste başla</a></div>`;
+  }else if(tab==='yolculugum'){
+    const j=u.j,cool=j.cool>Date.now();
+    b=`<div class="card"><h2>Seviye ${j.level}</h2><p>Şu anki taş: <b>${j.stone}</b> / 5 · Geçilen taş: ${(j.level-1)*5+j.stone-1}</p><div class="meter"><i style="width:${(j.stone-1)/5*100}%"></i></div>
+     <p class="mut" style="margin-top:12px">${cool?'Bekleme: '+fmtLeft(j.cool-Date.now()):'Taşa girmeye hazırsın.'}</p><a class="btn pri" href="#/yolculuk">Yol haritasını aç</a></div>`;
+  }else if(tab==='basarilar'){
+    b=`<div class="grid g3">${BADGES.map(x=>{const own=u.badges.includes(x.id);return `<div class="card" style="${own?'':'opacity:.55'}"><div style="font-size:2rem">${x.ic}</div><b>${x.t}</b><br><span class="mut sm">${x.d}</span><br><span class="tag ${own?'ok':''}">${own?'Kazanıldı':'Kilitli'}</span></div>`}).join('')}</div><div class="row" style="margin-top:18px"><a class="btn mint" href="#/gorevler">Görevlere git</a></div>`;
+  }else if(tab==='koleksiyon'){
+    const own=DB.store.filter(i=>u.owned.includes(i.id));
+    b=own.length?`<div class="grid g3">${own.map(i=>`<div class="card">${preview(i)}<h3 style="margin-top:10px">${esc(i.n)}</h3><div class="row">${u.eq[i.type]===i.id?'<span class="tag ok">Kullanılıyor</span><button class="btn sm out" data-a="unuse" data-t="'+i.type+'">Bırak</button>':`<button class="btn sm mint" data-a="use" data-id="${i.id}">Kullan</button>`}</div></div>`).join('')}</div>`:'<div class="card empty"><p>Koleksiyonun henüz boş.</p><a class="btn pri" href="#/magaza">Mağazaya git</a></div>';
+  }else if(tab==='arkadaslar'){
+    b=`<div class="card"><h3>Arkadaş ekle</h3><div class="row"><input id="fn" placeholder="Kullanıcı adı" aria-label="Kullanıcı adı" style="flex:1;min-width:160px"><button class="btn pri" data-a="addf">Ekle</button></div><p class="err" id="fe" role="alert"></p></div>
+     ${section('Arkadaş listesi',u.friends.length?`<div class="grid g2">${u.friends.map(n=>{const f=DB.users[n.toLowerCase()];return f?`<div class="card row between"><a class="row" href="#/u/${encodeURIComponent(f.name)}" style="text-decoration:none;color:var(--txt)">${avatar(f,44)}<b>${nameHtml(f)}</b></a><button class="btn sm out" data-a="duel" data-m="friend">Özel düello (kredisiz)</button></div>`:''}).join('')}</div>`:'<div class="card empty">Henüz arkadaşın yok. Bir kullanıcı adı yazıp ekle.</div>')}
+     <p class="mut sm">Arkadaşla özel düello kredi vermez ve beceri puanını değiştirmez. Bu sürümde davet demo rakiple açılır.</p>`;
+  }else if(tab==='ayarlar'){
+    b=`<div class="card"><h3>Hesap</h3><label for="bio">Kısa biyografi</label><textarea id="bio" rows="3" maxlength="160">${esc(u.bio)}</textarea><p class="mut sm">E-posta: ${esc(u.email)} (başkalarına gösterilmez)</p>
+     <h3 style="margin-top:18px">Gizlilik</h3>
+     <label class="row"><input type="checkbox" id="p1" style="width:auto;min-height:0" ${u.priv.stats?'checked':''}> Beceri ve seri bilgimi herkese göster</label>
+     <label class="row"><input type="checkbox" id="p2" style="width:auto;min-height:0" ${u.priv.badges?'checked':''}> Rozetlerimi herkese göster</label>
+     <label class="row"><input type="checkbox" id="p3" style="width:auto;min-height:0" ${u.priv.coll?'checked':''}> Koleksiyonumu herkese göster</label>
+     <h3 style="margin-top:18px">Bildirim ve tema</h3>
+     <label class="row"><input type="checkbox" id="p4" style="width:auto;min-height:0" ${u.notif?'checked':''}> Görev ve düello bildirimleri</label>
+     <label for="th">Tema</label><select id="th"><option value="">Sistem</option><option value="light" ${DB.theme==='light'?'selected':''}>Açık</option><option value="dark" ${DB.theme==='dark'?'selected':''}>Koyu</option></select>
+     <div class="row" style="margin-top:18px"><button class="btn pri" data-a="saveset">Kaydet</button><button class="btn out" data-a="logout">Çıkış yap</button>${u.admin?'<a class="btn sun" href="#/yonetim">Yönetim paneli</a>':''}</div></div>`;
+  }
+  const bgs=bg?`background:linear-gradient(135deg,${bg.d.a},${bg.d.b});color:#fff`:'background:var(--card)';
+  const ths=th?`border:3px solid ${th.d.b}`:'';
+  setApp(`<div class="card" style="${bgs};${ths};display:flex;gap:16px;align-items:center;flex-wrap:wrap">${avatar(u,76)}<div style="flex:1;min-width:200px"><h1 style="margin:0;font-size:1.7rem">${nameHtml(u)}</h1><p style="margin:4px 0 0;${bg?'':'color:var(--mut)'}">${esc(u.bio)||'Henüz biyografi yok.'}</p></div></div>
+   <div class="tabs" role="tablist">${PT.map(t=>`<a href="#/profil/${t[0]}" class="${tab===t[0]?'on':''}" role="tab" aria-selected="${tab===t[0]}">${t[1]}</a>`).join('')}</div>${b}`);
+};
+A.addf=()=>{
+  const u=U(),n=$('#fn').value.trim().toLowerCase(),f=DB.users[n];
+  if(!f)return $('#fe').textContent='Bu kullanıcı adıyla bir oyuncu bulunamadı.';
+  if(f.name===u.name)return $('#fe').textContent='Kendini ekleyemezsin.';
+  if(u.friends.includes(f.name))return $('#fe').textContent='Zaten arkadaşsınız.';
+  u.friends.push(f.name);if(!f.friends.includes(u.name))f.friends.push(u.name);save();toast(f.name+' arkadaş listene eklendi.');route();
+};
+A.saveset=()=>{
+  const u=U();u.bio=$('#bio').value.trim();u.priv={stats:$('#p1').checked,badges:$('#p2').checked,coll:$('#p3').checked};u.notif=$('#p4').checked;
+  DB.theme=$('#th').value||null;save();applyTheme();chrome();toast('Ayarlar kaydedildi.');
+};
+A.logout=()=>{DB.me=null;save();chrome();go('#/')};
+V.u=name=>{
+  name=decodeURIComponent(name||'');const u=DB.users[name.toLowerCase()];
+  if(!u)return setApp(`<div class="card empty"><h2>Oyuncu bulunamadı</h2><a href="#/siralamalar">Sıralamalara dön</a></div>`);
+  const bg=eqItem(u,'bg');
+  setApp(`<div class="card" style="${bg?`background:linear-gradient(135deg,${bg.d.a},${bg.d.b});color:#fff`:''};display:flex;gap:16px;align-items:center;flex-wrap:wrap">${avatar(u,76)}<div><h1 style="margin:0;font-size:1.7rem">${nameHtml(u)}</h1><p style="margin:4px 0 0">${esc(u.bio)||'Henüz biyografi yok.'}</p></div></div>
+   ${u.priv.stats?`<div class="grid g3" style="margin-top:14px"><div class="card"><span class="mut sm">Beceri puanı</span><h2>⭐ ${u.skill}</h2></div><div class="card"><span class="mut sm">Seri</span><h2>🔥 ${u.streak} gün</h2></div><div class="card"><span class="mut sm">Yolculuk</span><h2>Seviye ${u.j.level}</h2></div></div>`:'<div class="card empty" style="margin-top:14px">Bu oyuncu istatistiklerini gizledi.</div>'}
+   ${u.priv.badges?section('Rozetler',`<div class="row">${u.badges.map(id=>BADGES.find(b=>b.id===id)).filter(Boolean).map(b=>`<span class="pill">${b.ic} ${b.t}</span>`).join('')||'<span class="mut">Henüz rozet yok.</span>'}</div>`):''}
+   ${u.priv.coll?section('Koleksiyon',`<div class="row">${DB.store.filter(i=>u.owned.includes(i.id)).map(i=>`<span class="pill">${esc(i.n)}</span>`).join('')||'<span class="mut">Koleksiyon boş.</span>'}</div>`):''}`);
+};
+
+/* --- soru öner --- */
+V.oner=()=>{
+  const u=U();if(!u)return go('#/giris');
+  const correct=u.log.filter(l=>l.ok).length,top=board(weekStart().getTime(),0,null).slice(0,5).some(r=>r.u.name===u.name);
+  const ok=u.admin||correct>=DB.s.suggestMin||top;
+  if(!ok)return setApp(`<div class="form card" style="text-align:center"><p class="eyebrow">Soru öner</p><h1>Henüz açılmadı</h1><p class="mut">Soru önerebilmek için ${DB.s.suggestMin} doğru cevaba ulaşmalı ya da haftanın ilk 5 oyuncusu arasına girmelisin.</p><div class="meter"><i style="width:${Math.min(100,correct/DB.s.suggestMin*100)}%"></i></div><p class="mut sm">${correct} / ${DB.s.suggestMin} doğru cevap</p></div>`);
+  setApp(`<div class="form card"><p class="eyebrow">Soru öner</p><h1>Soru metnini yaz</h1><p class="mut">Yalnızca soru metnini yazar ve kategori seçersin. Şıkları, doğru cevabı ve yayın kararını editör belirler.</p><label for="st">Soru metni</label><textarea id="st" rows="3" maxlength="300"></textarea><label for="sc">Kategori</label>${topicSelect('sc').replace('<option value="mix">Genel Kültür karma (tüm alanlar)</option>','')}<p class="err" id="se"></p><button class="btn pri" id="ss">Öneriyi gönder</button></div>`);
+  $('#ss').onclick=()=>{const t=$('#st').value.trim();if(t.length<8)return $('#se').textContent='Soru metni en az 8 karakter olmalı.';DB.sugs.push({id:Date.now(),by:u.name,text:t,cat:$('#sc').value,at:Date.now(),st:'bekliyor'});save();toast('Önerin editöre gönderildi.');go('#/profil')};
+};
+
+/* --- yönetim --- */
+const AT=[['kategoriler','Kategoriler'],['sorular','Sorular'],['oneriler','Öneriler'],['raporlar','Hatalı soru bildirimleri'],['quizler','Quizler ve öne çıkanlar'],['yolculuk','Yolculuk'],['duello','Düello'],['magaza','Mağaza'],['gorevler','Görevler ve sezonlar'],['istatistik','İstatistikler']];
+V.yonetim=tab=>{
+  const u=U();
+  if(!u||!u.admin)return setApp(`<div class="form card" style="text-align:center"><h1>Yönetim paneli</h1><p class="mut">Bu bölüm yalnızca yöneticiler içindir. Bu tarayıcıda ilk açılan hesap yönetici olur.</p><a class="btn pri" href="#/">Ana sayfa</a></div>`);
+  tab=tab||'kategoriler';let b='';
+  const sel=(id,val,main)=>`<select id="${id}">${DB.cats.filter(c=>main?!c.p:true).map(c=>`<option value="${c.id}" ${val===c.id?'selected':''}>${'— '.repeat(crumb(c.id).length-1)}${esc(c.n)}</option>`).join('')}</select>`;
+  if(tab==='kategoriler'){
+    const tree=(id,d)=>kids(id).map(k=>`<div class="row between" style="padding:6px 0 6px ${d*18}px"><span>${k.i} ${esc(k.n)}</span><span class="row"><button class="btn sm out" data-a="acrename" data-id="${k.id}">Adı değiştir</button><button class="btn sm out" data-a="acdel" data-id="${k.id}">Sil</button></span></div>`+tree(k.id,d+1)).join('');
+    b=`<div class="card"><h3>Yeni kategori / alt kategori / dar başlık</h3><label for="cn">Ad</label><input id="cn"><label for="cp">Üst kategori</label><select id="cp"><option value="">(Ana kategori olarak ekle)</option>${DB.cats.map(c=>`<option value="${c.id}">${'— '.repeat(crumb(c.id).length-1)}${esc(c.n)}</option>`).join('')}</select><div style="margin-top:12px"><button class="btn pri" data-a="acadd">Ekle</button></div></div>
+     <div class="card sec">${MAINS().map(m=>`<div class="row between"><b>${m.i} ${esc(m.n)}</b><span class="row"><button class="btn sm out" data-a="acrename" data-id="${m.id}">Adı değiştir</button><button class="btn sm out" data-a="acdel" data-id="${m.id}">Sil</button></span></div>${tree(m.id,1)}`).join('<hr style="border:0;border-top:1px solid var(--line)">')}</div>`;
+  }else if(tab==='sorular'){
+    b=`<div class="card"><h3>Soru ekle (ortak havuza)</h3><label for="qt">Soru</label><textarea id="qt" rows="2"></textarea><label for="qc">Kategori</label>${sel('qc','')}<div class="grid g2">${[0,1,2,3].map(k=>`<div><label for="qo${k}">Şık ${LET[k]}</label><input id="qo${k}" value="Cevap"></div>`).join('')}</div><label for="qa">Doğru şık</label><select id="qa">${[0,1,2,3].map(k=>`<option value="${k}">${LET[k]}</option>`).join('')}</select><label for="qe">Açıklama</label><input id="qe" value="Açıklama"><label for="qd">Zorluk</label><select id="qd"><option value="1">Kolay</option><option value="2">Orta</option><option value="3">Zor</option></select><div style="margin-top:12px"><button class="btn pri" data-a="aqadd">Yayımla</button></div></div>
+     <div class="card sec"><h3>Havuza eklenen sorular (${DB.extra.length})</h3>${DB.extra.length?DB.extra.map(x=>`<div class="row between rev"><span>${esc(x.q)} <span class="tag">${esc(cat(x.cat)?cat(x.cat).n:'')}</span></span><button class="btn sm out" data-a="aqdel" data-id="${x.id}">Sil</button></div>`).join(''):'<span class="mut">Henüz soru eklenmedi. Havuz şu an “Soru / Cevap” yer tutucularıyla çalışır.</span>'}</div>`;
+  }else if(tab==='oneriler'){
+    const l=DB.sugs.filter(s=>s.st==='bekliyor');
+    b=l.length?l.map(s=>`<div class="card" style="margin-bottom:12px"><b>${esc(s.text)}</b><br><span class="mut sm">${esc(s.by)} · ${esc(cat(s.cat)?cat(s.cat).n:'')} · ${fmtD(s.at)}</span><div class="grid g2" style="margin-top:10px">${[0,1,2,3].map(k=>`<input id="so${s.id}-${k}" value="Cevap" aria-label="Şık ${LET[k]}">`).join('')}</div><div class="row" style="margin-top:10px"><select id="sa${s.id}" style="width:auto">${[0,1,2,3].map(k=>`<option value="${k}">Doğru: ${LET[k]}</option>`).join('')}</select><select id="sd${s.id}" style="width:auto"><option value="1">Kolay</option><option value="2" selected>Orta</option><option value="3">Zor</option></select><button class="btn sm mint" data-a="sugok" data-id="${s.id}">Onayla ve yayımla</button><button class="btn sm out" data-a="sugno" data-id="${s.id}">Reddet</button></div></div>`).join(''):'<div class="card empty">İncelenecek öneri yok. Onaylanmayan öneriler testlerde görünmez.</div>';
+  }else if(tab==='raporlar'){
+    const l=DB.reports.filter(r=>r.open);
+    b=l.length?`<div class="card">${l.map(r=>`<div class="row between rev"><span><b>${esc(r.q)}</b> · ${esc(r.note)||'(not yok)'}<br><span class="mut sm">${esc(r.by)} · ${fmtD(r.at)}</span></span><button class="btn sm out" data-a="rpclose" data-id="${r.id}">İncelendi</button></div>`).join('')}</div>`:'<div class="card empty">Açık bildirim yok.</div>';
+  }else if(tab==='quizler'){
+    b=`<div class="card"><h3>Yeni sabit quiz</h3><label for="nq">Başlık</label><input id="nq"><label for="nc">Kategori</label>${sel('nc','')}<label for="nn">Soru sayısı</label><input id="nn" type="number" min="1" max="50" value="10"><div style="margin-top:12px"><button class="btn pri" data-a="aqz">Oluştur</button></div></div>
+     <div class="card sec tw"><table><tr><th>Quiz</th><th>Sürüm</th><th>Öne çıkan</th><th>Durum</th><th></th></tr>${DB.quizzes.map(q=>`<tr><td><input value="${esc(q.t)}" data-a="" onchange="A.qztitle('${q.id}',this.value)" aria-label="Başlık" style="min-width:200px"></td><td>${q.ver}</td><td><input type="checkbox" style="width:auto;min-height:0" ${q.feat?'checked':''} onchange="A.qzfeat('${q.id}',this.checked)" aria-label="Öne çıkan"></td><td>${q.st}</td><td class="row"><button class="btn sm out" data-a="qzver" data-id="${q.id}">Yeni sürüm</button><button class="btn sm out" data-a="qzst" data-id="${q.id}">${q.st==='taslak'?'Yayımla':'Taslağa al'}</button></td></tr>`).join('')}</table></div>`;
+  }else if(tab==='yolculuk'){
+    const g=DB.s.groups;
+    b=`<div class="card"><h3>Alan grupları (her grup 5 seviye)</h3>${g.map((gr,gi)=>`<p><b>Seviye ${gi*5+1}–${gi*5+5}</b></p><div class="grid g3">${gr.map((id,k)=>`<select data-a="" onchange="A.setgrp(${gi},${k},this.value)" aria-label="Alan">${MAINS().map(m=>`<option value="${m.id}" ${m.id===id?'selected':''}>${esc(m.n)}</option>`).join('')}</select>`).join('')}</div>`).join('')}<p class="mut sm">Beş alan aynı grupta tekrar edemez; kaydedilirken kontrol edilir. Grup sayısı kadar seviye bloğundan sonra gruplar başa döner.</p></div>
+     <div class="card sec"><h3>Seviye atlama taşı süreleri (saniye)</h3><div class="row"><label>Başlangıç <input id="sb" type="number" value="${DB.s.stoneBase}" min="10"></label><label>Seviye başı azalma <input id="ss" type="number" value="${DB.s.stoneStep}" min="0"></label><label>Bekleme (dk) <input id="sc" type="number" value="${DB.s.cool}" min="1"></label></div>
+     <div class="grid g3" style="margin-top:10px">${Array.from({length:15},(_,i)=>`<label>Seviye ${i+1}<input type="number" min="0" placeholder="${stoneTime(i+1)}" value="${DB.s.stoneTimes[i+1]||''}" onchange="A.stt(${i+1},this.value)"></label>`).join('')}</div><p class="mut sm">Boş bırakılan seviye formülü kullanır.</p><button class="btn pri" data-a="svj">Kaydet</button></div>`;
+  }else if(tab==='duello'){
+    b=`<div class="card"><h3>Düello ayarları</h3><div class="grid g3"><label>Tur süresi (sn)<input id="d1" type="number" min="5" value="${DB.s.duelSec}"></label><label>Doğru başına kredi<input id="d2" type="number" min="0" value="${DB.s.duelCredit}"></label><label>Galibiyet bonusu<input id="d3" type="number" min="0" value="${DB.s.duelBonus}"></label></div><p class="mut sm">Kredi değerleri gerçek eşleşme altyapısı bağlandığında kullanılır; demo maçlar kredi vermez.</p><button class="btn pri" data-a="svd" style="margin-top:12px">Kaydet</button></div>`;
+  }else if(tab==='magaza'){
+    b=`<div class="card tw"><h3>Ürünler ve fiyatlar</h3><p class="mut sm">Fiyat boş bırakılan ürün satın alınamaz.</p><table><tr><th>Ürün</th><th>Tür</th><th>Fiyat (kredi)</th><th>Aktif</th></tr>${DB.store.map(i=>`<tr><td>${esc(i.n)}</td><td>${esc(STORE_TYPES.find(t=>t[0]===i.type)[1])}</td><td><input type="number" min="0" value="${i.price==null?'':i.price}" onchange="A.price('${i.id}',this.value)" aria-label="Fiyat" style="width:110px"></td><td><input type="checkbox" style="width:auto;min-height:0" ${i.on?'checked':''} onchange="A.sact('${i.id}',this.checked)" aria-label="Aktif"></td></tr>`).join('')}</table></div>`;
+  }else if(tab==='gorevler'){
+    b=`<div class="card tw"><h3>Görevler</h3><table><tr><th>Görev</th><th>Dönem</th><th>Hedef</th><th>Ödül (kredi)</th></tr>${DB.missions.map(m=>`<tr><td>${esc(m.t)}</td><td>${m.per==='d'?'Günlük':'Haftalık'}</td><td><input type="number" min="1" value="${m.target}" onchange="A.mset('${m.id}','target',this.value)" style="width:90px"></td><td><input type="number" min="0" value="${m.reward==null?'':m.reward}" onchange="A.mset('${m.id}','reward',this.value)" style="width:90px" aria-label="Ödül"></td></tr>`).join('')}</table></div>
+     <div class="card sec"><h3>Sezonlar</h3>${DB.seasons.map(s=>`<p>${esc(s.n)} · ${fmtD(s.a)} – ${s.b?fmtD(s.b):'sürüyor'}</p>`).join('')}<button class="btn pri" data-a="newseason">Yeni sezon başlat</button></div>`;
+  }else if(tab==='istatistik'){
+    const us=Object.values(DB.users),tot=us.reduce((s,x)=>s+x.log.length,0);
+    b=`<div class="grid g3"><div class="card"><span class="mut sm">Kullanıcı</span><h2>${us.length}</h2></div><div class="card"><span class="mut sm">Çözülen soru</span><h2>${tot}</h2></div><div class="card"><span class="mut sm">Quiz çözümü</span><h2>${DB.quizzes.reduce((s,q)=>s+q.plays,0)}</h2></div><div class="card"><span class="mut sm">Bekleyen öneri</span><h2>${DB.sugs.filter(s=>s.st==='bekliyor').length}</h2></div><div class="card"><span class="mut sm">Açık bildirim</span><h2>${DB.reports.filter(r=>r.open).length}</h2></div></div>
+     <div class="card sec tw"><h3>Kategori başına doğruluk</h3><table><tr><th>Kategori</th><th>Cevap</th><th>Doğruluk</th></tr>${MAINS().map(m=>{const a=us.reduce((s,x)=>s+(x.cat[m.id]?x.cat[m.id].a:0),0),c=us.reduce((s,x)=>s+(x.cat[m.id]?x.cat[m.id].c:0),0);return `<tr><td>${esc(m.n)}</td><td>${a}</td><td>${a?'%'+Math.round(c/a*100):'-'}</td></tr>`}).join('')}</table></div>`;
+  }
+  setApp(`<p class="eyebrow">Yönetim</p><h1>Yönetim paneli</h1><div class="tabs">${AT.map(t=>`<a href="#/yonetim/${t[0]}" class="${tab===t[0]?'on':''}">${t[1]}</a>`).join('')}</div>${b}`);
+};
+const adm=()=>{const u=U();return u&&u.admin};
+A.acadd=()=>{if(!adm())return;const n=$('#cn').value.trim(),p=$('#cp').value||null;if(!n)return toast('Ad yaz.');const par=p?cat(p):null;const main=p?mainOf(p):null;DB.cats.push({id:'c'+Date.now(),n,i:main?main.i:'📌',c:main?main.c:'#5C50F1',p});save();toast('Eklendi.');route()};
+A.acrename=t=>{if(!adm())return;const c=cat(t.dataset.id);modal(`<h3>Adı değiştir</h3><input id="rn" value="${esc(c.n)}"><div class="row" style="margin-top:12px"><button class="btn pri" id="rok">Kaydet</button><button class="btn out" data-a="close">Vazgeç</button></div>`);$('#rok').onclick=()=>{const v=$('#rn').value.trim();if(v){c.n=v;save();closeModal();route()}}};
+A.acdel=t=>{if(!adm())return;const id=t.dataset.id,ids=desc(id);if(DB.quizzes.some(q=>ids.includes(q.cat)))return toast('İçinde quiz olan kategori silinemez.');if(DB.extra.some(q=>ids.includes(q.cat)))return toast('İçinde soru olan kategori silinemez.');
+  if(!cat(id).p&&MAINS().length<=5)return toast('En az 5 ana kategori kalmalı.');
+  confirmBox('Kategoriyi sil',esc(cat(id).n)+' ve alt başlıkları silinecek.','Sil',()=>{DB.cats=DB.cats.filter(c=>!ids.includes(c.id));DB.s.groups=DB.s.groups.map(g=>g.map(x=>ids.includes(x)?MAINS()[0].id:x));save();route()})};
+A.aqadd=()=>{if(!adm())return;const q=$('#qt').value.trim();if(!q)return toast('Soru metni yaz.');DB.extra.push({id:'x'+Date.now(),q,o:[0,1,2,3].map(k=>$('#qo'+k).value.trim()||'Cevap'),a:+$('#qa').value,e:$('#qe').value.trim(),d:+$('#qd').value,cat:$('#qc').value,st:'yayin'});save();toast('Havuza eklendi.');route()};
+A.aqdel=t=>{if(!adm())return;DB.extra=DB.extra.filter(x=>x.id!==t.dataset.id);save();route()};
+A.sugok=t=>{if(!adm())return;const id=+t.dataset.id,s=DB.sugs.find(x=>x.id===id);if(!s)return;DB.extra.push({id:'x'+id,q:s.text,o:[0,1,2,3].map(k=>$(`#so${id}-${k}`).value.trim()||'Cevap'),a:+$('#sa'+id).value,e:'Açıklama',d:+$('#sd'+id).value,cat:s.cat,st:'yayin'});s.st='yayinda';save();toast('Yayımlandı.');route()};
+A.sugno=t=>{if(!adm())return;const s=DB.sugs.find(x=>x.id===+t.dataset.id);if(s)s.st='reddedildi';save();route()};
+A.rpclose=t=>{if(!adm())return;const r=DB.reports.find(x=>x.id===+t.dataset.id);if(r)r.open=false;save();route()};
+A.qztitle=(id,v)=>{if(!adm())return;const q=quiz(id);if(q&&v.trim()){q.t=v.trim();save()}};
+A.qzfeat=(id,v)=>{if(!adm())return;quiz(id).feat=v;save()};
+A.qzver=t=>{if(!adm())return;const q=quiz(t.dataset.id);q.ver++;save();toast('Yeni sürüm: '+q.ver+'. Eski sonuçlar eski sürümle saklanır.');route()};
+A.qzst=t=>{if(!adm())return;const q=quiz(t.dataset.id);q.st=q.st==='taslak'?'yayin':'taslak';save();route()};
+A.aqz=()=>{if(!adm())return;const t=$('#nq').value.trim(),c=$('#nc').value,n=Math.max(1,Math.min(50,+$('#nn').value||10));if(!t)return toast('Başlık yaz.');const id='q'+Date.now(),m=mainOf(c);
+  DB.quizzes.push({id,t,cat:c,ver:1,feat:false,plays:0,at:DB.quizzes.length,st:'yayin',qs:Array.from({length:n},(_,j)=>({id:id+'-'+(j+1),q:'Soru '+(j+1),o:['Cevap A','Cevap B','Cevap C','Cevap D'],a:j%4,e:'Açıklama',d:1+j%3,cat:m.id,sub:c}))});save();toast('Quiz oluşturuldu.');route()};
+A.setgrp=(gi,k,v)=>{if(!adm())return;DB.s.groups[gi][k]=v};
+A.stt=(L,v)=>{if(!adm())return;if(+v>0)DB.s.stoneTimes[L]=+v;else delete DB.s.stoneTimes[L];save()};
+A.svj=()=>{if(!adm())return;for(const g of DB.s.groups){if(new Set(g).size!==g.length)return toast('Bir grupta aynı alan iki kez seçilemez.')}DB.s.stoneBase=+$('#sb').value||90;DB.s.stoneStep=+$('#ss').value||0;DB.s.cool=+$('#sc').value||120;save();toast('Kaydedildi.')};
+A.svd=()=>{if(!adm())return;DB.s.duelSec=+$('#d1').value||20;DB.s.duelCredit=+$('#d2').value||0;DB.s.duelBonus=+$('#d3').value||0;save();toast('Kaydedildi.')};
+A.price=(id,v)=>{if(!adm())return;item(id).price=v===''?null:Math.max(0,Math.round(+v));save()};
+A.sact=(id,v)=>{if(!adm())return;item(id).on=v;save()};
+A.mset=(id,k,v)=>{if(!adm())return;const m=DB.missions.find(x=>x.id===id);m[k]=v===''?null:Math.max(0,+v);save()};
+A.newseason=()=>{if(!adm())return;confirmBox('Yeni sezon','Mevcut sezon kapanır ve sıralamada geçmiş sezon olarak kalır.','Başlat',()=>{const s=DB.seasons[DB.seasons.length-1];s.b=Date.now();DB.seasons.push({id:s.id+1,n:'Sezon '+(s.id+1),a:Date.now(),b:null});save();route()})};
+
+V.nf=()=>setApp(`<div class="card empty"><h2>Sayfa bulunamadı</h2><a class="btn pri" href="#/">Ana sayfaya dön</a></div>`);
+
+/* ================= yönlendirici ================= */
+function route(){
+  if(CUR&&CUR.abort){try{CUR.abort()}catch(e){}}CUR=null;
+  TIMERS.forEach(t=>{clearInterval(t);clearTimeout(t)});TIMERS=[];
+  closeModal();
+  let h=(location.hash||'#/').slice(1);let arg='';
+  const qi=h.indexOf('?');if(qi>=0){arg=h.slice(qi+1);h=h.slice(0,qi)}
+  const p=h.split('/').filter(Boolean),r=p[0]||'home',a=p[1];
+  const map={home:()=>V.home(),kesfet:()=>V.kesfet(),kategori:()=>V.kategori(a),quiz:()=>V.quiz(a),oyna:()=>V.oyna(a),modlar:()=>V.modlar(),sonsuz:()=>V.sonsuz(a),sinav:()=>V.sinav(a),yolculuk:()=>V.yolculuk(),duello:()=>V.duello(),siralamalar:()=>V.siralamalar(arg),gorevler:()=>V.gorevler(),magaza:()=>V.magaza(arg),giris:()=>V.giris(),kayit:()=>V.kayit(),seviye:()=>V.seviye(),profil:()=>V.profil(a),u:()=>V.u(a),oner:()=>V.oner(),yonetim:()=>V.yonetim(a)};
+  chrome();
+  (map[r]||V.nf)();
+  app.focus({preventScroll:true});
+}
+window.addEventListener('hashchange',route);
+window.addEventListener('resize',()=>{const tl=$('#tlogin');if(tl)tl.style.display=innerWidth>=900?'inline-flex':'none'});
+load();applyTheme();
+if(DB.me&&!DB.users[DB.me])DB.me=null;
+route();
+</script>
+</body>
+</html>

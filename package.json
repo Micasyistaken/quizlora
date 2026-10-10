@@ -1,0 +1,14 @@
+{
+  "name": "quizlora",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npx --yes serve dist -l 3000",
+    "validate": "node scripts/validate.mjs",
+    "build": "npm run validate"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
