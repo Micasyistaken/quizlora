@@ -5,10 +5,18 @@
   "type": "module",
   "scripts": {
     "dev": "npx --yes serve dist -l 3000",
-    "validate": "node scripts/validate.mjs",
-    "build": "npm run validate"
+    "icons:build": "node scripts/build-category-symbols.mjs",
+    "validate": "node scripts/validate.mjs && node scripts/verify-category-tree.mjs && node scripts/verify-category-visuals.mjs",
+    "build": "npm run icons:build && npm run validate",
+    "bot": "node src/cli.js",
+    "bot:categories": "node src/cli.js categories:sync",
+    "bot:doctor": "node src/cli.js doctor",
+    "test": "node --test"
   },
   "engines": {
     "node": ">=20"
+  },
+  "devDependencies": {
+    "@mdi/js": "^7.4.47"
   }
 }

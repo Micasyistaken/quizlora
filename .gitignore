@@ -1,3 +1,8 @@
 node_modules/
 .vercel/
 .DS_Store
+data/*.json
+data/*.lock
+reports/
+
+.vercel

@@ -1,0 +1,7 @@
+SELECT DISTINCT ?subject ?subjectLabel ?object ?objectLabel WHERE {
+  ?subject wdt:P31/wdt:P279* wd:Q6256;
+           wdt:P36 ?object.
+  FILTER NOT EXISTS { ?subject wdt:P576 ?end }
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "tr,en". }
+}
+LIMIT 320

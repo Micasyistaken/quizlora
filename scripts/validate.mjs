@@ -17,4 +17,13 @@ if (scripts.length !== 1) {
 new Function(scripts[0]);
 JSON.parse(readFileSync(vercelPath, 'utf8'));
 
-console.log('Quizlora statik doğrulaması geçti.');
+for (const asset of ['collon.css', 'collon-mark.svg', 'collon-wordmark.svg', 'collon-transfer.js', 'fonts/manrope-latin.woff2', 'fonts/manrope-latin-ext.woff2', 'fonts/OFL.txt']) {
+  if (!existsSync(new URL(`../dist/assets/${asset}`, import.meta.url))) {
+    throw new Error(`Collon varlığı eksik: ${asset}`);
+  }
+}
+if (!html.includes('assets/collon.css') || !html.includes('assets/collon-transfer.js')) {
+  throw new Error('Collon stil ve veri aktarımı sayfaya bağlanmalıdır.');
+}
+
+console.log('Collon statik doğrulaması geçti.');
