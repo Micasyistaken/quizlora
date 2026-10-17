@@ -1,0 +1,5 @@
+/.playwright-cli/
+/.impeccable/
+/GATES*.md
+/*.png
+/*.yml

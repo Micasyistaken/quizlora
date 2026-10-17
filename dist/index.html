@@ -2046,7 +2046,7 @@ function chrome(){
   const u=U(),h=location.hash||'#/';
   const on=p=>p==='#/'?h==='#/'||h==='':h.startsWith(p);
   const prof=u?['#/profil','Profilim','user']:['#/giris','Giriş Yap','user'];
-  $('#topbar').innerHTML=`${clockHtml()}<a class="brand" href="#/" aria-label="Collon ana sayfa">${logo(34)}<span class="brand-word">collon</span></a>
+  $('#topbar').innerHTML=`${clockHtml()}<a class="brand" href="#/" aria-label="Collon ana sayfa">${logo(28)}<span class="brand-word">collon</span></a>
    <nav class="docknav" id="desktop-dock" aria-label="Üst gezinme"><div class="dock-list">${NAV.map(n=>{const hasMenu=['gunluk','kesfet','modlar'].includes(n[0].slice(2));return `<a class="dock-link${on(n[0])?' on':''}" href="${n[0]}" data-nav="${n[0].slice(2)||'home'}" aria-label="${n[1]}" ${hasMenu?'aria-controls="dock-panel" aria-expanded="false"':''} ${on(n[0])?'aria-current="page"':''}>${gl(n[2],18)}<span class="dock-label">${n[1]}</span></a>`}).join('')}<a class="dock-link${on(prof[0])?' on':''}" href="${prof[0]}" aria-label="${prof[1]}" ${on(prof[0])?'aria-current="page"':''}>${gl(prof[2],18)}<span class="dock-label">${prof[1]}</span></a>${u&&u.admin?`<a class="dock-link" href="#/yonetim" aria-label="Yönetim">${gl('settings',18)}<span class="dock-label">Yönetim</span></a>`:''}</div><div class="dock-panel" id="dock-panel" aria-hidden="true" inert><div class="dock-panel-inner"></div></div></nav>
    <div class="tright">
     <form class="hs" id="hs" role="search">${gl('search',18)}<input id="hsq" type="search" placeholder="Quiz ara" aria-label="Quiz ara" autocomplete="off"></form>

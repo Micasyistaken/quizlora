@@ -1,19 +1,25 @@
 ---
 name: Collon
-description: Çöz, öğren, yarış — yalın ve yüksek kontrastlı Türkçe quiz deneyimi.
+description: Çöz, öğren, yarış — kontrollü renk vurgulu, yüksek kontrastlı Türkçe quiz deneyimi.
 colors:
-  light-page: "#F7F7F4"
+  light-page: "#F7F8FC"
   light-surface: "#FFFFFF"
-  light-soft: "#EEEEEB"
-  light-text: "#111112"
-  light-muted: "#5D5D5C"
-  light-line: "#DADAD6"
-  dark-page: "#101011"
-  dark-surface: "#1A1A1C"
-  dark-soft: "#252527"
-  dark-text: "#F5F5F2"
-  dark-muted: "#B6B6B2"
-  dark-line: "#3A3A3D"
+  light-soft: "#EEF0FA"
+  light-text: "#171A2B"
+  light-muted: "#515A70"
+  light-line: "#D9DEED"
+  light-action: "#3E4FAE"
+  light-mint: "#087D69"
+  light-amber: "#9C610E"
+  dark-page: "#11141F"
+  dark-surface: "#1B2030"
+  dark-soft: "#252C40"
+  dark-text: "#F5F7FF"
+  dark-muted: "#BBC4D8"
+  dark-line: "#3D4760"
+  dark-action: "#9AA6FF"
+  dark-mint: "#70DAC0"
+  dark-amber: "#F2BF68"
 typography:
   family: "Collon UI (self-hosted Manrope), Arial, sans-serif"
   body: "16px / 1.5"
@@ -34,19 +40,22 @@ kelime logosu esas alınır. Yerel vektör uyarlamaları `dist/assets/collon-mar
 ve `dist/assets/collon-wordmark.svg` dosyalarındadır. Orijinal tasarımın
 vektör dosyası bulunmadığı için bunlar referanstan yeniden çizilmiştir.
 
-Ürün dili enerjik kalır, fakat arayüz çerçevesi siyah/beyaz eksenli, net ve
-sakin olmalıdır. Fotoğrafik kategori sahneleri, kategoriye özgü vektörler,
-oyunlaştırma görselleri ve işlevsel animasyonlar korunur. Bunlar nötr arayüz
-üzerinde içerik olarak dikkat çeker; marka eylemlerinin rengini belirlemez.
+Ürün dili enerjik kalır; arayüz çerçevesi sakin, net ve ölçülü renk vurgulu
+olmalıdır. Wordmark tema metni renginde kalır. Fotoğrafik kategori sahneleri,
+kategoriye özgü vektörler, oyunlaştırma görselleri ve işlevsel animasyonlar
+korunur. Arayüz vurguları bu görsellerle yarışmaz.
 
 ## Renk ve tema
 
-Işık tema: sayfa `#F7F7F4`, yüzey `#FFFFFF`, yumuşak yüzey `#EEEEEB`, metin
-ve ana eylem `#111112`, ikincil metin `#5D5D5C`, çizgi `#DADAD6`.
-Koyu tema: sayfa `#101011`, yüzey `#1A1A1C`, yumuşak yüzey `#252527`, metin
-ve ana eylem `#F5F5F2`, ikincil metin `#B6B6B2`, çizgi `#3A3A3D`.
-Durum renkleri yalnızca başarı, hata, süre uyarısı ve ödül gibi semantik
-bağlamlarda kullanılabilir. Metin anlamı yalnızca renge yüklenmez.
+Işık tema: sayfa `#F7F8FC`, yüzey `#FFFFFF`, yumuşak yüzey `#EEF0FA`, metin
+`#171A2B`, ikincil metin `#515A70`, çizgi `#D9DEED`.
+Koyu tema: sayfa `#11141F`, yüzey `#1B2030`, yumuşak yüzey `#252C40`, metin
+`#F5F7FF`, ikincil metin `#BBC4D8`, çizgi `#3D4760`.
+Birincil eylem ve seçili gezinme indigo (`#3E4FAE` / `#9AA6FF`), günlük ve
+ilerleme mint (`#087D69` / `#70DAC0`), ödül ve rekabet amber (`#9C610E` /
+`#F2BF68`) kullanır. Geniş tanıtım yüzeyleri bu vurguların koyu, metni
+okunur tonlarını kullanır. Hata ve başarı semantiği ayrı kalır. Anlam yalnızca
+renge yüklenmez.
 
 ## Tipografi ve kompozisyon
 
@@ -63,8 +72,9 @@ odaklı dar çalışma alanı, sıralamada taranabilir satırlar, profil ve mağ
 
 ## Bileşen ve etkileşim
 
-- Birincil buton tema metninin rengini zemin, tema sayfasının rengini yazı
-  olarak kullanır. İkincil eylem ince çizgi veya metin-link olabilir.
+- Birincil buton indigo eylem rengini ve ona karşıt yazıyı kullanır. Fotoğraf
+  ya da koyu tanıtım yüzeyindeki buton okunur beyaz olabilir. İkincil eylem
+  ince çizgi veya metin-link olabilir.
 - Genel yüzeyde 14–18px, kontrollerde 8–10px köşe yarıçapı kullanılır.
   Belirgin gölge yalnızca gerçek yükseklik/etkileşim gösterdiğinde eklenir.
 - Desktop üst gezinme, Türkiye saati ve yalnızca Günlük/Keşfet/Modlar için

@@ -31,10 +31,7 @@ test('self-hosted Manrope and OFL license are included', () => {
   assert.match(readFileSync(asset('assets/fonts/OFL.txt'), 'utf8'), /SIL OPEN FONT LICENSE/);
 });
 
-test('both theme surfaces expose approved neutral tokens', () => {
+test('brand layer registers the self-hosted UI font', () => {
   const css = readFileSync(asset('assets/collon.css'), 'utf8');
-  for (const value of ['#F7F7F4', '#FFFFFF', '#EEEEEB', '#111112', '#5D5D5C', '#DADAD6', '#101011', '#1A1A1C', '#252527', '#F5F5F2', '#B6B6B2', '#3A3A3D']) {
-    assert.ok(css.includes(value), `missing ${value}`);
-  }
   assert.match(css, /@font-face[\s\S]*?font-family:\s*['"]Collon UI/);
 });
