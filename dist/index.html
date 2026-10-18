@@ -2046,7 +2046,7 @@ function chrome(){
   const u=U(),h=location.hash||'#/';
   const on=p=>p==='#/'?h==='#/'||h==='':h.startsWith(p);
   const prof=u?['#/profil','Profilim','user']:['#/giris','Giriş Yap','user'];
-  $('#topbar').innerHTML=`${clockHtml()}<a class="brand" href="#/" aria-label="Collon ana sayfa">${logo(28)}<span class="brand-word">collon</span></a>
+  $('#topbar').innerHTML=`<div class="top-left">${clockHtml()}<a class="brand" href="#/" aria-label="Collon ana sayfa">${logo(28)}<span class="brand-word">collon</span></a></div>
    <nav class="docknav" id="desktop-dock" aria-label="Üst gezinme"><div class="dock-list">${NAV.map(n=>{const hasMenu=['gunluk','kesfet','modlar'].includes(n[0].slice(2));return `<a class="dock-link${on(n[0])?' on':''}" href="${n[0]}" data-nav="${n[0].slice(2)||'home'}" aria-label="${n[1]}" ${hasMenu?'aria-controls="dock-panel" aria-expanded="false"':''} ${on(n[0])?'aria-current="page"':''}>${gl(n[2],18)}<span class="dock-label">${n[1]}</span></a>`}).join('')}<a class="dock-link${on(prof[0])?' on':''}" href="${prof[0]}" aria-label="${prof[1]}" ${on(prof[0])?'aria-current="page"':''}>${gl(prof[2],18)}<span class="dock-label">${prof[1]}</span></a>${u&&u.admin?`<a class="dock-link" href="#/yonetim" aria-label="Yönetim">${gl('settings',18)}<span class="dock-label">Yönetim</span></a>`:''}</div><div class="dock-panel" id="dock-panel" aria-hidden="true" inert><div class="dock-panel-inner"></div></div></nav>
    <div class="tright">
     <form class="hs" id="hs" role="search">${gl('search',18)}<input id="hsq" type="search" placeholder="Quiz ara" aria-label="Quiz ara" autocomplete="off"></form>
@@ -2167,13 +2167,36 @@ function scoreRing(c,n){const p=n?Math.round(c/n*100):0;return `<div class="scor
 
 /* ================= görünümler ================= */
 const V={};
+function selectHeroQuizzes(quizzes,limit=9,random=Math.random,previousIds=[]){
+  const shuffle=items=>{const out=[...items];for(let i=out.length-1;i>0;i--){const j=Math.floor(random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out};
+  const groups=new Map();
+  for(const q of shuffle(quizzes.filter(q=>q.st!=='taslak'&&cat(q.cat)&&mainOf(q.cat)))){
+    const key=mainOf(q.cat).id;
+    if(!groups.has(key))groups.set(key,[]);
+    groups.get(key).push(q);
+  }
+  const mains=shuffle([...groups.keys()]),selected=[],usedCats=new Set();
+  while(selected.length<limit){
+    let added=false;
+    for(const key of mains){
+      const group=groups.get(key);
+      while(group.length&&usedCats.has(group[0].cat))group.shift();
+      if(!group.length)continue;
+      const q=group.shift();selected.push(q);usedCats.add(q.cat);added=true;
+      if(selected.length===limit)break;
+    }
+    if(!added)break;
+  }
+  if(selected.length>1&&previousIds.length===selected.length&&selected.every((q,i)=>q.id===previousIds[i]))selected.push(selected.shift());
+  return selected;
+}
 function heroHtml(){
-  const pick=['Tarih','Bilim','Genel Kültür','Oyunlar ve E-spor','Müzik'];
-  const cards=pick.map((mn,i)=>{
-    const m=MAINS().find(x=>x.n===mn);if(!m)return '';
-    const q=DB.quizzes.find(x=>x.st!=='taslak'&&mainOf(x.cat)&&mainOf(x.cat).id===m.id);if(!q)return '';
-    const subject=cat(q.cat)||m;
-    return `<div class="fc f${i+1}" data-slot="${i-2}" data-quiz="${q.id}" style="--i:${i}"><span class="fg"></span><span class="fct"><b>${esc(q.t)}</b><span>${esc(m.n)}</span></span><span class="fcp"><i>?</i>${q.qs.length} soru</span><span class="fca hero-card-symbol">${categoryVisual(subject,m,210)}</span><button type="button" class="hero-card-hit" aria-label="${esc(q.t)} kartını aç" aria-expanded="false" aria-controls="hero-card-play-${i}"></button><a class="btn hero-card-play" id="hero-card-play-${i}" href="#/quiz/${q.id}" tabindex="-1">Oyna ${gl('arrow',18)}</a></div>`;
+  let previous=[];try{previous=JSON.parse(sessionStorage.getItem('collon:hero-cards')||'[]')}catch{}
+  const picked=selectHeroQuizzes(DB.quizzes,9,Math.random,Array.isArray(previous)?previous:[]);
+  try{sessionStorage.setItem('collon:hero-cards',JSON.stringify(picked.map(q=>q.id)))}catch{}
+  const cards=picked.map((q,i)=>{
+    const subject=cat(q.cat),m=mainOf(q.cat);
+    return `<div class="fc" data-slot="${i-Math.floor(picked.length/2)}" data-quiz="${q.id}" style="--i:${i};--a:${m.c};--b:color-mix(in srgb,${m.c} 58%,#11141F)"><span class="fg"></span><span class="fct"><b>${esc(subject.n)}</b><span>${esc(m.n)}</span></span><span class="fcp"><i>?</i>${q.qs.length} soru</span><span class="fca hero-card-symbol">${categoryVisual(subject,m,210)}</span><button type="button" class="hero-card-hit" aria-label="${esc(subject.n)} kartını aç" aria-expanded="false" aria-controls="hero-card-play-${i}"></button><a class="btn hero-card-play" id="hero-card-play-${i}" href="#/quiz/${q.id}" tabindex="-1">Oyna ${gl('arrow',18)}</a></div>`;
   }).join('');
   const pub=DB.quizzes.filter(q=>q.st!=='taslak');
   const nQ=pub.length,nC=DB.cats.length,nS=pub.reduce((s,q)=>s+q.qs.length,0);
@@ -2210,7 +2233,7 @@ function initFan(root){
   const cards=[...root.querySelectorAll('.fc')],n=cards.length;
   if(n<3)return null;
   const hero=!!root.closest('#hero');
-  let active=Math.min(2,n-1),lock=performance.now()+1600,last=0;
+  let active=hero?Math.floor(n/2):Math.min(2,n-1),lock=performance.now()+1600,last=0;
   const setK=()=>{const w=root.parentElement?root.parentElement.clientWidth:innerWidth,k=Math.min(1,Math.max(.5,(w||1180)/1180));root.style.setProperty('--k',k);if(hero)root.style.setProperty('--hero-arrow-offset',`${150*k+62}px`)};
   function layout(){cards.forEach((c,i)=>{const o=slotOf(i,active,n);c.dataset.slot=o;c.classList.toggle('hid',Math.abs(o)>2);if(hero){c.querySelector('.hero-card-hit').tabIndex=o===0?0:-1;c.setAttribute('aria-current',o===0?'true':'false')}})}
   function go(i,o){active=i;last=o;lock=performance.now()+650;layout()}
@@ -2386,7 +2409,7 @@ V.kesfet=(arg)=>{
   const se=DB.seasons[DB.seasons.length-1],days=Math.max(1,Math.ceil((Date.now()-se.a)/864e5)),players=Object.keys(DB.users).length;
   const cards=MAINS().map(m=>{
     const nq=quizzesIn(m.id).length,on=m.id===KSEL;
-    return `<button class="kxc${on?' on':''}" data-a="kxsel" data-id="${m.id}" aria-pressed="${on}" style="--c1:${m.c};--c2:color-mix(in srgb,${m.c} 45%,#000)">${categoryVisual(m,m,104)}<span class="kxb"><span class="kxbt"><b>${esc(m.n)}</b><small>${kids(m.id).length} alt kategori · ${nq} quiz</small></span><span class="kxa">${gl(on?'check':'arrow',16)}</span></span></button>`;
+    return `<button class="kxc${on?' on':''}" data-a="kxsel" data-id="${m.id}" aria-pressed="${on}" aria-label="${esc(m.n)}: ${kids(m.id).length} alt kategori, ${nq} quiz" style="--category-color:${m.c}">${categoryVisual(m,m,104)}<span class="kxb"><span class="kxbt"><b>${esc(m.n)}</b><small>${kids(m.id).length} alt kategori · ${nq} quiz</small></span></span></button>`;
   }).join('');
   const feats=[['check','Sabit quizler','Herkes aynı soruları çözer.'],['coin','İlk çözümde kredi','Her doğru cevap 1 kredi.'],['timer','Süreli sınav','25 soru, geri dönüş serbest.'],['flag','Yolculuk','Taş taş ilerle, seviye atla.'],['swords','1’e 1 düello','Yakın seviyede rakiple yarış.']];
   setApp(`<section class="kxh"><div class="kxht"><span class="kxtag">Keşfet</span><h1>Merak ettiğin konuyu <em>bul</em>, hemen çöz.</h1><p>${MAINS().length} ana kategori, yüzlerce alt başlık. Aramaya başla ya da bir kategori seç.</p>

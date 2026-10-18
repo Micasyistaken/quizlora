@@ -123,7 +123,7 @@ h2 {font-size:clamp(1.45rem,2.2vw,2rem);}
 main {padding-top:38px;}
 .eyebrow,.sech {color:var(--brand-muted);font-size:.75rem;letter-spacing:.1em;font-weight:800;}
 .collon-mark,.brand-word {display:inline-block;flex:none;background:currentColor;mask:url('./collon-mark.svg') center/contain no-repeat;-webkit-mask:url('./collon-mark.svg') center/contain no-repeat;}
-.brand-word {width:81px;height:28px;mask-image:url('./collon-wordmark.svg');-webkit-mask-image:url('./collon-wordmark.svg');font-size:0;}
+.brand-word {width:72px;height:25px;mask-image:url('./collon-wordmark.svg');-webkit-mask-image:url('./collon-wordmark.svg');font-size:0;}
 .top {background:color-mix(in srgb,var(--brand-page) 95%,transparent);border-color:var(--brand-line);backdrop-filter:blur(18px);}
 body.hdark .top {background:color-mix(in srgb,var(--brand-page) 95%,transparent);border-bottom-color:var(--brand-line);backdrop-filter:blur(18px);}
 body.hdark .brand,body.hdark .tr-clock {color:var(--brand-text);}
@@ -131,6 +131,8 @@ body.hdark .hs,body.hdark .ibtn,body.hdark .chipc {background:var(--brand-surfac
 body.hdark .hs input {color:var(--brand-text);}
 body.hdark .hs input::placeholder {color:var(--brand-muted);}
 .top .wrap {height:72px;gap:16px;}
+.top-left {display:flex;align-items:center;gap:14px;min-width:0;}
+@media(min-width:900px){.top .wrap {display:flex;justify-content:space-between;}.top-left {flex:none;}.tr-clock {margin-left:-8px;margin-right:8px;}.docknav {flex:none;margin-left:0;}.tright {margin-left:0;flex:none;}}
 .brand {gap:8px;color:var(--brand-text);min-width:max-content;}
 .tr-clock-label {color:var(--brand-muted);}
 .dock-list {border-color:var(--brand-line);border-radius:13px;background:var(--brand-surface);box-shadow:none;}
@@ -171,7 +173,7 @@ input:focus,select:focus,textarea:focus {border-color:var(--brand-text);}
 .cta .btn.pri,.cta .btn.mint {background:#fff;color:#171A2B;border-color:#fff;}
 .cta .btn.glass {color:#fff;}
 .foot {border-top:1px solid var(--brand-line);margin-top:70px;padding-top:28px;}
-@media(max-width:899px){.top .wrap{height:64px;gap:10px}.brand-word{width:72px;height:25px}}
+@media(max-width:899px){.top .wrap{height:64px;gap:10px}.top-left{gap:8px}.brand-word{width:66px;height:23px}}
 @media(max-width:359px){.brand-word{display:none}}
 @media(prefers-reduced-motion:reduce){.magnetic-cta{translate:none!important}.daily-card,.fc,.dock-link{transform:none!important}.theme-switch-icon{animation:none!important}}
 
@@ -216,8 +218,18 @@ input:focus,select:focus,textarea:focus {border-color:var(--brand-text);}
 .kxplat {opacity:.28;}
 .kxg,.kxqg,.kxsg {gap:12px;}
 .kxc,.kxq,.kxsub {border-radius:12px;box-shadow:none;}
-.kxc.on {box-shadow:0 0 0 2px var(--brand-text);}
+.kxc {min-height:166px;height:auto;padding:8px 4px 12px;justify-content:flex-start;align-items:center;overflow:visible;border:0;border-radius:0;background:transparent;color:var(--brand-text);box-shadow:none;gap:8px;}
+.kxc>.category-art {position:static;top:auto;left:auto;width:92px!important;height:92px!important;margin:0 auto;transform:none;color:var(--category-color);}
+.kxc:hover,.kxc:focus-visible,.kxc.on {transform:translateY(-2px);box-shadow:none;}
+.kxc:hover>.category-art,.kxc:focus-visible>.category-art {transform:scale(1.06);}
+.kxc.on::after {content:"";position:absolute;bottom:0;left:28%;right:28%;height:2px;border-radius:2px;background:var(--brand-action);}
+.kxc:focus-visible {outline:2px solid var(--brand-action);outline-offset:2px;}
+.kxc .kxb {min-height:0;justify-content:center;padding:0;background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;text-align:center;}
+.kxc .kxbt b {font-size:.9rem;line-height:1.25;}
+.kxc .kxbt small {margin-top:3px;color:var(--brand-muted);font-size:.72rem;}
 .kxb {background:rgba(10,10,11,.75);}
+@media(max-width:599px){.kxg{grid-template-columns:repeat(2,minmax(0,1fr))}.kxc{min-height:150px}.kxc>.category-art{width:78px!important;height:78px!important}}
+@media(max-width:899px){#hero .fan .fc .fct{top:62px;right:12px}}
 .kxa,.kxplay,.kxbd {background:#f2f1eb;color:#111;}
 .kxsub:hover,.kxsub:focus-visible,.kxq:hover,.kxq:focus-visible {border-color:var(--brand-text);box-shadow:0 9px 24px rgba(0,0,0,.08);}
 .kxban {background:var(--brand-feature);color:#fff;box-shadow:none;border-radius:16px;}
